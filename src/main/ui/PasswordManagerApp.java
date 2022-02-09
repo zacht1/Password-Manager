@@ -61,7 +61,10 @@ public class PasswordManagerApp {
     //this might be source of error
     private void createNewCard() {
         System.out.println("\nPlease give your new card a title:");
-        AccountCard newCard = new AccountCard(input.next());
+        input.nextLine();
+        String title;
+        title = input.nextLine();
+        AccountCard newCard = new AccountCard(title);
         passwordManager.addCard(newCard);
 
         boolean shouldClose = false;
@@ -87,21 +90,34 @@ public class PasswordManagerApp {
         System.out.println("\tFinished filling in fields -> q");
     }
 
-    private void handleCreatorInstruction(String instruction, AccountCard ac) {
+    private void handleCreatorInstruction(String instruction, AccountCard card) {
         if (Objects.equals(instruction, "l")) {
             System.out.println("\nPlease enter your login/username:");
-            ac.setLogin(input.next());
+            card.setLogin(input.next());
         } else if (Objects.equals(instruction, "p")) {
-            System.out.println("\nPlease enter your password:");
-            ac.setPassword(input.next());
+            System.out.println("\nGenerator password for you?");
+            System.out.println("\tYes -> y");
+            System.out.println("\tNo -> n");
+            handlePasswordGeneration(input.next(), card);
         } else if (Objects.equals(instruction, "e")) {
             System.out.println("\nPlease enter your email address:");
-            ac.setEmail(input.next());
+            card.setEmail(input.next());
         } else if (Objects.equals(instruction, "u")) {
             System.out.println("\nPlease enter the websites URL:");
-            ac.setUrl(input.next());
+            card.setUrl(input.next());
         } else {
             System.out.println("\n" + BAD_INPUT_MESSAGE);
+        }
+    }
+
+    private void handlePasswordGeneration(String instruction, AccountCard card) {
+        if (Objects.equals(instruction, "y")) {
+            System.out.println("Please enter desired password length:");
+            String newPassword = card.generatePassword(input.nextInt());
+            System.out.println("Password set to " + newPassword);
+        } else {
+            System.out.println("Please enter your password:");
+            card.setPassword(input.next());
         }
     }
 
@@ -190,12 +206,21 @@ public class PasswordManagerApp {
         System.out.println("\tWebsite URL: " + card.getUrl());
     }
 
+    private void printCardInfoNoNewLine(AccountCard card) {
+        System.out.println("Title: " + card.getTitle());
+        System.out.println("\tLogin: " + card.getLogin());
+        System.out.println("\tPassword: " + card.getPassword());
+        System.out.println("\tEmail Address: " + card.getEmail());
+        System.out.println("\tWebsite URL: " + card.getUrl());
+    }
+
     private void deleteCard(AccountCard card) {
         passwordManager.getAccounts().remove(card);
     }
 
     private void editCard(AccountCard card) {
-        System.out.println("What information would you like to change?");
+        System.out.println("Here is the cards current information:");
+        printCardInfoNoNewLine(card);
 
         boolean shouldClose = false;
         boolean toMainMenu = false;
@@ -217,6 +242,7 @@ public class PasswordManagerApp {
     }
 
     private void displayEditMenu() {
+        System.out.println("\nWhat information would you like to change?");
         System.out.println("\tTitle -> t");
         System.out.println("\tLogin -> l");
         System.out.println("\tPassword -> p");
@@ -249,9 +275,7 @@ public class PasswordManagerApp {
 
         if (Objects.equals(newTitle, "d")) {
             card.setTitle(null);
-        } else if (Objects.equals(newTitle, "")) {
-            ;
-        } else {
+        }  else {
             card.setTitle(newTitle);
         }
     }
@@ -263,8 +287,6 @@ public class PasswordManagerApp {
 
         if (Objects.equals(newLogin, "d")) {
             card.setLogin(null);
-        } else if (Objects.equals(newLogin, "")) {
-            ;
         } else {
             card.setLogin(newLogin);
         }
@@ -277,8 +299,6 @@ public class PasswordManagerApp {
 
         if (Objects.equals(newPassword, "d")) {
             card.setPassword(null);
-        } else if (Objects.equals(newPassword, "")) {
-            ;
         } else {
             card.setPassword(newPassword);
         }
@@ -291,8 +311,6 @@ public class PasswordManagerApp {
 
         if (Objects.equals(newEmail, "d")) {
             card.setEmail(null);
-        } else if (Objects.equals(newEmail, "")) {
-            ;
         } else {
             card.setEmail(newEmail);
         }
@@ -305,8 +323,6 @@ public class PasswordManagerApp {
 
         if (Objects.equals(newURL, "d")) {
             card.setUrl(null);
-        } else if (Objects.equals(newURL, "")) {
-            ;
         } else {
             card.setUrl(newURL);
         }
