@@ -10,13 +10,16 @@ public class PasswordManagerApp {
     private static final String BAD_INPUT_MESSAGE = "... unknown input";
 
     private AccountRepository passwordManager;
-    private String password;
+    private String password;                   // implement in further phases of project
     private Scanner input;
 
+    // EFFECTS: runs MyPasswordManager app
     public PasswordManagerApp() {
         runPasswordManager();
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes account repository and processes user input
     private void runPasswordManager() {
         boolean shouldEnd = false;
         String instruction;
@@ -38,6 +41,7 @@ public class PasswordManagerApp {
         }
     }
 
+    // EFFECTS: processes user input
     private void processInstruction(String instruction) {
         if (Objects.equals(instruction, "new")) {
             createNewCard();
@@ -50,6 +54,7 @@ public class PasswordManagerApp {
         }
     }
 
+    // EFFECTS: displays main menu on console
     private void displayMainMenu() {
         System.out.println("\nPlease select from the following menu:");
         System.out.println("\tTo add a new card -> new");
@@ -58,7 +63,8 @@ public class PasswordManagerApp {
         System.out.println("\tTo quit MyPasswordManager -> quit");
     }
 
-    //this might be source of error
+    // MODIFIES: this
+    // EFFECTS: creates a new AccountCard within the account repository, and processes further user input
     private void createNewCard() {
         System.out.println("\nPlease give your new card a title:");
         input.nextLine();
@@ -81,28 +87,28 @@ public class PasswordManagerApp {
         }
     }
 
+    // EFFECTS: displays card creation menu on the console
     private void displayCreateMenu() {
         System.out.println("\nWhat fields would you like to add to your new card:");
         System.out.println("\tLogin/Username -> l");
         System.out.println("\tPassword -> p");
         System.out.println("\tEmail Address -> e");
-        System.out.println("\tWebsite URL -> u");
+        System.out.println("\tWebsite URL -> w");
         System.out.println("\tFinished filling in fields -> q");
     }
 
+    // MODIFIES: card
+    // EFFECTS: handles user input
     private void handleCreatorInstruction(String instruction, AccountCard card) {
         if (Objects.equals(instruction, "l")) {
             System.out.println("\nPlease enter your login/username:");
             card.setLogin(input.next());
         } else if (Objects.equals(instruction, "p")) {
-            System.out.println("\nGenerator password for you?");
-            System.out.println("\tYes -> y");
-            System.out.println("\tNo -> n");
-            handlePasswordGeneration(input.next(), card);
+            handlePasswordGeneration(card);
         } else if (Objects.equals(instruction, "e")) {
             System.out.println("\nPlease enter your email address:");
             card.setEmail(input.next());
-        } else if (Objects.equals(instruction, "u")) {
+        } else if (Objects.equals(instruction, "w")) {
             System.out.println("\nPlease enter the websites URL:");
             card.setUrl(input.next());
         } else {
@@ -110,7 +116,15 @@ public class PasswordManagerApp {
         }
     }
 
-    private void handlePasswordGeneration(String instruction, AccountCard card) {
+    // MODIFIES: card
+    // EFFECTS: handles user input, and based on input changes password to randomly generated password, or changes
+    //          password to user input password
+    private void handlePasswordGeneration(AccountCard card) {
+        System.out.println("\nGenerator password for you?");
+        System.out.println("\tYes -> y");
+        System.out.println("\tNo -> n");
+        String instruction = input.next();
+
         if (Objects.equals(instruction, "y")) {
             System.out.println("Please enter desired password length:");
             String newPassword = card.generatePassword(input.nextInt());
@@ -121,22 +135,22 @@ public class PasswordManagerApp {
         }
     }
 
+    // EFFECTS: prints out all account card titles within the account repository
     private void viewAllCards() {
         System.out.println(passwordManager.getAccountTitles());
     }
 
+    // MODIFIES : this
+    // EFFECTS: handles user input, and deletes card if user inputs 'd'
     private void searchForCard() {
         System.out.println("\nEnter name of card you are looking for:");
-        AccountCard card = passwordManager.getSpecificCard(input.next());
 
-        boolean foundCard;
-        foundCard = card != null;
-        boolean shouldClose = false;
+        input.nextLine();
+        String cardTitle;
+        cardTitle = input.nextLine();
+        AccountCard card = passwordManager.getSpecificCard(cardTitle);
 
-        if (!foundCard) {
-            System.out.println("No card with that title in MyPasswordManager");
-            shouldClose = true;
-        }
+        boolean shouldClose = isCardFound(card);
 
         while (!shouldClose) {
             displayCardMenu();
@@ -154,6 +168,20 @@ public class PasswordManagerApp {
         }
     }
 
+    // EFFECTS: returns true and prints out message if card is null, otherwise returns false
+    private boolean isCardFound(AccountCard card) {
+        boolean foundCard;
+        foundCard = card != null;
+
+        if (!foundCard) {
+            System.out.println("No card with that title in MyPasswordManager");
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // EFFECTS: displays account card menu on the console
     private void displayCardMenu() {
         System.out.println("\nSelect from:");
         System.out.println("\tCopy username -> u");
@@ -164,6 +192,8 @@ public class PasswordManagerApp {
         System.out.println("\tBack to main menu -> q");
     }
 
+    // MODIFIES: this
+    // EFFECTS: handles user input
     private void handleCardInstructions(String instruction, AccountCard card) {
         if (Objects.equals(instruction, "u")) {
             handleLoginCopy(card);
@@ -180,6 +210,7 @@ public class PasswordManagerApp {
         }
     }
 
+    // EFFECTS: if card has login then copies login to clipboard
     private void handleLoginCopy(AccountCard card) {
         if (card.copyLogin()) {
             card.copyLogin();
@@ -189,6 +220,7 @@ public class PasswordManagerApp {
         }
     }
 
+    // EFFECTS: if card has password then copies password to clipboard
     private void handlePasswordCopy(AccountCard card) {
         if (card.copyPassword()) {
             card.copyPassword();
@@ -198,6 +230,7 @@ public class PasswordManagerApp {
         }
     }
 
+    // EFFECTS: displays an account cards info in the console on a new line
     private void printCardInfo(AccountCard card) {
         System.out.println("\nTitle: " + card.getTitle());
         System.out.println("\tLogin: " + card.getLogin());
@@ -206,6 +239,7 @@ public class PasswordManagerApp {
         System.out.println("\tWebsite URL: " + card.getUrl());
     }
 
+    // EFFECTS: displays an account cards info in the console
     private void printCardInfoNoNewLine(AccountCard card) {
         System.out.println("Title: " + card.getTitle());
         System.out.println("\tLogin: " + card.getLogin());
@@ -214,16 +248,19 @@ public class PasswordManagerApp {
         System.out.println("\tWebsite URL: " + card.getUrl());
     }
 
+    // MODIFIES: this
+    // EFFECTS: deletes given card from account repository
     private void deleteCard(AccountCard card) {
         passwordManager.getAccounts().remove(card);
     }
 
+    // MODIFIES: card
+    // EFFECTS: handles user input
     private void editCard(AccountCard card) {
         System.out.println("Here is the cards current information:");
         printCardInfoNoNewLine(card);
 
         boolean shouldClose = false;
-        boolean toMainMenu = false;
 
         while (!shouldClose) {
             displayEditMenu();
@@ -231,9 +268,6 @@ public class PasswordManagerApp {
 
             if (Objects.equals(instruction, "q")) {
                 shouldClose = true;
-            } else if (Objects.equals(instruction, "m")) {
-                shouldClose = true;
-                toMainMenu = true;
             } else {
                 handleEditInstructions(instruction, card);
             }
@@ -241,17 +275,19 @@ public class PasswordManagerApp {
         }
     }
 
+    // EFFECTS: displays account card edit menu on the console
     private void displayEditMenu() {
         System.out.println("\nWhat information would you like to change?");
         System.out.println("\tTitle -> t");
         System.out.println("\tLogin -> l");
         System.out.println("\tPassword -> p");
         System.out.println("\tEmail Address -> e");
-        System.out.println("\tWebsite URL -> u");
+        System.out.println("\tWebsite URL -> w");
         System.out.println("\tFinished editing this card -> q");
-        System.out.println("\tReturn to main menu -> m");
     }
 
+    // MODIFIES: card
+    // EFFECTS: handles user input
     private void handleEditInstructions(String instruction, AccountCard card) {
         if (Objects.equals(instruction, "t")) {
             changeTitle(card);
@@ -261,25 +297,28 @@ public class PasswordManagerApp {
             changePassword(card);
         } else if (Objects.equals(instruction, "e")) {
             changeEmail(card);
-        } else if (Objects.equals(instruction, "u")) {
+        } else if (Objects.equals(instruction, "w")) {
             changeURL(card);
         } else {
             System.out.println(BAD_INPUT_MESSAGE);
         }
     }
 
+    // MODIFIES: card
+    // EFFECTS: changes the given account cards title to user input title, or deletes current title if input 'd'
     private void changeTitle(AccountCard card) {
         System.out.println("\nCurrent title: " + card.getTitle());
         System.out.println("Enter new title:");
-        String newTitle = input.next();
 
-        if (Objects.equals(newTitle, "d")) {
-            card.setTitle(null);
-        }  else {
-            card.setTitle(newTitle);
-        }
+        input.nextLine();
+        String newTitle;
+        newTitle = input.nextLine();
+
+        card.setTitle(newTitle);
     }
 
+    // MODIFIES: card
+    // EFFECTS: changes the given account cards login to user input login, or deletes current login if input 'd'
     private void changeLogin(AccountCard card) {
         System.out.println("\nCurrent login: " + card.getLogin());
         System.out.println("Enter new login or enter 'd' to delete current login:");
@@ -287,23 +326,34 @@ public class PasswordManagerApp {
 
         if (Objects.equals(newLogin, "d")) {
             card.setLogin(null);
+            System.out.println("Login/username deleted");
         } else {
             card.setLogin(newLogin);
         }
     }
 
+    // MODIFIES: card
+    // EFFECTS: changes the given account cards password to user input password or random generated password,
+    //          or deletes current password if input 'd'
     private void changePassword(AccountCard card) {
         System.out.println("\nCurrent password: " + card.getPassword());
-        System.out.println("Enter new password or enter 'd' to delete current password:");
+        System.out.println("Please select from the following:");
+        System.out.println("\tEnter new password -> n");
+        System.out.println("\tDelete password -> d");
         String newPassword = input.next();
 
         if (Objects.equals(newPassword, "d")) {
             card.setPassword(null);
+            System.out.println("Password deleted");
+        } else if (Objects.equals(newPassword, "n")) {
+            handlePasswordGeneration(card);
         } else {
-            card.setPassword(newPassword);
+            System.out.println(BAD_INPUT_MESSAGE);
         }
     }
 
+    // MODIFIES: card
+    // EFFECTS: changes the given account cards email to user input email, or deletes current email if input 'd'
     private void changeEmail(AccountCard card) {
         System.out.println("\nCurrent Email address: " + card.getEmail());
         System.out.println("Enter new Email address or enter 'd' to delete current Email address:");
@@ -311,18 +361,22 @@ public class PasswordManagerApp {
 
         if (Objects.equals(newEmail, "d")) {
             card.setEmail(null);
+            System.out.println("Email deleted");
         } else {
             card.setEmail(newEmail);
         }
     }
 
+    // MODIFIES: card
+    // EFFECTS: changes the given account cards url to user input url, or deletes current url if input 'd'
     private void changeURL(AccountCard card) {
         System.out.println("\nCurrent website URL: " + card.getUrl());
-        System.out.println("Enter new website URL:");
+        System.out.println("Enter new website URL or enter 'd' to delete current website url:");
         String newURL = input.next();
 
         if (Objects.equals(newURL, "d")) {
             card.setUrl(null);
+            System.out.println("Website url deleted");
         } else {
             card.setUrl(newURL);
         }

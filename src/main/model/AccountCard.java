@@ -48,6 +48,10 @@ public class AccountCard {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets password to a random password from a combination of letters, numbers and symbols and returns
+    //          that password
+    // note: this is not a great password generator, planning to improve as project progresses
     public String generatePassword(int length) {
         Random rand = new Random();
         String characters;
@@ -55,8 +59,8 @@ public class AccountCard {
                 + "abcdefghijklmnopqrstuvwxyz" + "abcdefghijklmnopqrstuvwxyz"  + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "!!!@##$**&*!&@$%!%^&*()_+={}|[];:<>?/";
-        ArrayList<Character> chars = new ArrayList<>();
 
+        ArrayList<Character> chars = new ArrayList<>();
         int i = 0;
 
         while (i < length) {

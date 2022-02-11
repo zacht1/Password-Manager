@@ -63,4 +63,19 @@ class AccountCardTest {
         assertEquals(20, testCard.generatePassword(20).length());
         assertEquals(20, testCard.getPassword().length());
     }
+
+    @Test
+    public void testGettersSetters() {
+        testCard.setTitle("Google");
+        testCard.setLogin("Guest");
+        testCard.setPassword("password1");
+        testCard.setUrl("www.google.com");
+        testCard.setEmail("guest@gmail.com");
+
+        assertEquals("Google", testCard.getTitle());
+        assertEquals("guest@gmail.com", testCard.getEmail());
+        assertEquals("password1", testCard.getPassword());
+        assertEquals("www.google.com", testCard.getUrl());
+        assertEquals("Guest", testCard.getLogin());
+    }
 }
