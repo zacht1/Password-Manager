@@ -6,6 +6,8 @@ import model.AccountRepository;
 import java.util.Objects;
 import java.util.Scanner;
 
+// Represents the console app for MyPasswordManager
+// Credit: Much of the scanner/user interaction/console code in this class is influenced by the TellerApp sample project
 public class PasswordManagerApp {
     private static final String BAD_INPUT_MESSAGE = "... unknown input";
 
