@@ -52,6 +52,8 @@ public class AccountCard {
     // EFFECTS: sets password to a random password from a combination of letters, numbers and symbols and returns
     //          that password
     // note: this is not a great password generator, planning to improve as project progresses
+    // credit: reformatted some code from here:
+    // https://stackoverflow.com/questions/2626835/is-there-functionality-to-generate-a-random-character-in-java
     public String generatePassword(int length) {
         Random rand = new Random();
         String characters;
