@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 public class AccountRepository {
     private List<AccountCard> accounts;
 
+    // EFFECTS: initializes AccountRepository with an empty list of accounts
     public AccountRepository() {
         accounts = new ArrayList<>();
     }

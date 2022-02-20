@@ -15,6 +15,7 @@ public class AccountCard {
     private String email;
     private String url;
 
+    // REQUIRES: title has a non-zero length
     // EFFECTS: constructs a new account card with the given title and null for the rest of the fields
     public AccountCard(String title) {
         this.title = title;

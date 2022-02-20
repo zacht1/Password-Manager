@@ -18,7 +18,7 @@ password managers work, and how they protect users' passwords.
 - Password duplicate detection
 - Weak password detection
 
-## User Stories
+## Phase 1 User Stories
 - As a user, I want to be able to add an account card to my password manager 
 - As a user, I want to be able to add any account information to an account card 
 - As a user, I want to be able to view all the account cards in my password manager 
@@ -27,3 +27,7 @@ password managers work, and how they protect users' passwords.
 - As a user, I want to be able to edit any account information of an account card
 - As a user, I want to be able to copy a password to the clipboard without using ctrl+c
 - As a user, I want MyPasswordManager to generate strong passwords of any length for me
+
+## Phase 2 User Stories
+- As a user, I want to be able to load my password manager from file when I give the correct password
+- As a user, I want my password manager to automatically save to file when I close the application
