@@ -46,7 +46,6 @@ public class AccountRepositoryTest {
 
     @Test
     public void testDeleteSpecificCard() {
-        AccountRepository testAccounts2 = testAccounts;
         testAccounts.addCard(testCard1);
         testAccounts.addCard(testCard2);
 
@@ -58,5 +57,14 @@ public class AccountRepositoryTest {
 
         assertTrue(testAccounts.deleteSpecificCard("Facebook"));
         assertEquals(0, testAccounts.getAccounts().size());
+    }
+
+    @Test
+    public void testNumAccounts() {
+        assertEquals(0, testAccounts.numAccounts());
+        testAccounts.addCard(testCard1);
+        assertEquals(1, testAccounts.numAccounts());
+        testAccounts.addCard(testCard2);
+        assertEquals(2, testAccounts.numAccounts());
     }
 }

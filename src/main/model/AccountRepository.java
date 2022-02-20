@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 // Represents a list of all the account cards in the password manager, and a password to access the list
 public class AccountRepository {
     private List<AccountCard> accounts;
+    private String password;
 
     // EFFECTS: initializes AccountRepository with an empty list of accounts
     public AccountRepository() {
@@ -54,8 +55,17 @@ public class AccountRepository {
         }
     }
 
+    // EFFECTS: returns the number of account cards in AccountRepository
+    public int numAccounts() {
+        return accounts.size();
+    }
+
     // getters & setters
     public List<AccountCard> getAccounts() {
         return accounts;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
