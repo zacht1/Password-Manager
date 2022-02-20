@@ -10,7 +10,8 @@ public class AccountRepository {
     private String password;
 
     // EFFECTS: initializes AccountRepository with an empty list of accounts
-    public AccountRepository() {
+    public AccountRepository(String password) {
+        this.password = password;
         accounts = new ArrayList<>();
     }
 

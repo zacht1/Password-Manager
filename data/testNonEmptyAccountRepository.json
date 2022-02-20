@@ -1,0 +1,19 @@
+{
+    "accounts": [
+      {
+          "title": "Google",
+          "login": "Guest",
+          "password": "password",
+          "email": "guest@gmail.com",
+          "url": "google.com"
+      },
+      {
+          "title": "Amazon",
+          "login": "John123",
+          "password": "12345",
+          "email": "john_doe@gmail.com",
+          "url": "amazon.com"
+      }
+    ],
+    "password": "1234abcd"
+}

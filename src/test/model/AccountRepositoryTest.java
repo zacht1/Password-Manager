@@ -12,7 +12,7 @@ public class AccountRepositoryTest {
 
     @BeforeEach
     public void setup() {
-        testAccounts = new AccountRepository();
+        testAccounts = new AccountRepository("password");
         testCard1 = new AccountCard("Google");
         testCard2 = new AccountCard("Facebook");
     }

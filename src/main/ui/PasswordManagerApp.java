@@ -26,7 +26,7 @@ public class PasswordManagerApp {
         boolean shouldEnd = false;
         String instruction;
 
-        passwordManager = new AccountRepository();
+        passwordManager = new AccountRepository("password");
         password = "12345";
         input = new Scanner(System.in);
 
