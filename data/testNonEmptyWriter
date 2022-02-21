@@ -1,0 +1,19 @@
+{
+    "password": "password",
+    "accounts": [
+        {
+            "password": "1qaz2wsx",
+            "title": "Netflix",
+            "login": "Guest123",
+            "email": "jimbo@gmail.com",
+            "url": "netflix.com"
+        },
+        {
+            "password": "password",
+            "title": "UBC Student Services Center",
+            "login": "cwlName",
+            "email": "student@student.ubc.ca",
+            "url": "cas.id.ubc.ca"
+        }
+    ]
+}

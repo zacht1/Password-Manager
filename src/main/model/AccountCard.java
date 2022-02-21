@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.JsonFormat;
+
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -8,7 +11,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 // Represents an account card with a title, login, password, email and website URL
-public class AccountCard {
+public class AccountCard implements JsonFormat {
     private String title;
     private String login;
     private String password;
@@ -62,7 +65,6 @@ public class AccountCard {
                 + "abcdefghijklmnopqrstuvwxyz" + "abcdefghijklmnopqrstuvwxyz"  + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "!!!@##$**&*!&@$%!%^&*()_+={}|[];:<>?/";
-
         ArrayList<Character> chars = new ArrayList<>();
         int i = 0;
 
@@ -74,6 +76,19 @@ public class AccountCard {
         String password = chars.stream().map(Object::toString).collect(Collectors.joining());
         this.password = password;
         return password;
+    }
+
+    @Override
+    // credit: this method is based on the toJson method in JsonSerializationDemo Thingy class
+    public JSONObject formatJson() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("title", title);
+        jsonObject.put("login", login);
+        jsonObject.put("password", password);
+        jsonObject.put("email", email);
+        jsonObject.put("url", url);
+
+        return jsonObject;
     }
 
     // getters & setters

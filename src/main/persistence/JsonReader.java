@@ -21,14 +21,14 @@ public class JsonReader {
         this.source = source;
     }
 
-    // EFFECTS: reads AccountRepository from file and returns it
+    // EFFECTS: reads AccountRepository from file and returns it, throws IOException if cannot read from source file
     public AccountRepository readAccounts() throws IOException {
         String data = readString(source);
         JSONObject jsonObject = new JSONObject(data);
         return parseAccountRepository(jsonObject);
     }
 
-    // EFFECTS: reads the source file as a string a returns it
+    // EFFECTS: reads the source file as a string a returns it, throws IOException if cannot read from source file
     public String readString(String source) throws IOException {
         StringBuilder dataBuilder = new StringBuilder();
 

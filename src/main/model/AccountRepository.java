@@ -1,11 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.JsonFormat;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 // Represents a list of all the account cards in the password manager, and a password to access the list
-public class AccountRepository {
+public class AccountRepository implements JsonFormat {
     private List<AccountCard> accounts;
     private String password;
 
@@ -59,6 +63,28 @@ public class AccountRepository {
     // EFFECTS: returns the number of account cards in AccountRepository
     public int numAccounts() {
         return accounts.size();
+    }
+
+    @Override
+    // credit: this method is based on the toJson method in JsonSerializationDemo WorkRoom class
+    public JSONObject formatJson() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("password", password);
+        jsonObject.put("accounts", formatCardsJson());
+
+        return jsonObject;
+    }
+
+    // EFFECTS: returns list of AccountCards as a JSONArray
+    // credit: this method is based on the thingiesToJson method in JsonSerializationDemo WorkRoom class
+    private JSONArray formatCardsJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (AccountCard c : accounts) {
+            jsonArray.put(c.formatJson());
+        }
+
+        return jsonArray;
     }
 
     // getters & setters
