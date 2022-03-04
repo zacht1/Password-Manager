@@ -44,7 +44,7 @@ public class JsonReaderTest extends JsonTest{
             assertEquals(2, accounts.numAccounts());
             checkCard("Google", null, "12345abcd", null, null,
                     accounts.getAccounts().get(0));
-            checkCard("Amazon", "Johnd", "password", "josn_d334@gmail.com", null,
+            checkCard("Amazon", "Johnd", null, "josn_d334@gmail.com", null,
                     accounts.getAccounts().get(1));
         } catch (IOException e) {
             fail("Could not read from file");

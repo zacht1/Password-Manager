@@ -79,11 +79,7 @@ public class JsonReader {
 
     // EFFECTS: if key: "title" exists, returns the string under the key: "title", otherwise returns null
     public String readTitle(JSONObject jsonObject) {
-        if (jsonObject.has("title")) {
-            return jsonObject.getString("title");
-        } else {
-            return null;
-        }
+        return jsonObject.getString("title");
     }
 
     // EFFECTS: if key: "login" exists, returns the string under the key: "login", otherwise returns null
