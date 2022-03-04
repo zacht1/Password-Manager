@@ -3,6 +3,13 @@ package ui;
 import model.AccountCard;
 import model.AccountRepository;
 
+import persistence.JsonReader;
+import persistence.JsonWriter;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -10,25 +17,147 @@ import java.util.Scanner;
 // Credit: Much of the scanner/user interaction/console code in this class is influenced by the TellerApp sample project
 public class PasswordManagerApp {
     private static final String BAD_INPUT_MESSAGE = "... unknown input";
+    private static final String FILE_PATHNAME = "./data/myPasswordManager.json";
 
     private AccountRepository passwordManager;
-    private String password;                   // implement in further phases of project
     private Scanner input;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs MyPasswordManager app
-    public PasswordManagerApp() {
+    public PasswordManagerApp() throws FileNotFoundException {
         runPasswordManager();
     }
 
     // MODIFIES: this
     // EFFECTS: initializes account repository and processes user input
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     private void runPasswordManager() {
         boolean shouldEnd = false;
         String instruction;
 
-        passwordManager = new AccountRepository("password");
-        password = "12345";
         input = new Scanner(System.in);
+        jsonWriter = new JsonWriter(FILE_PATHNAME);
+        jsonReader = new JsonReader(FILE_PATHNAME);
+
+        Boolean existingAccount = accountExists();
+
+        while (!shouldEnd) {
+
+            if (existingAccount) {
+                loadFromSave(jsonReader);
+                displayLoginMenu();
+                instruction = input.next();
+                instruction = instruction.toLowerCase(Locale.ROOT);
+
+                if (instruction.equals("quit")) {
+                    save(jsonWriter, passwordManager);
+                    shouldEnd = true;
+                } else if (instruction.equals("delete")) {
+                    Boolean deleted = null;
+                    try {
+                        deleted = deleteFile();
+                    } catch (IOException e) {
+                        System.out.println("Could not delete file");
+                    }
+                    System.out.println(deleted);
+                    shouldEnd = true;
+                }  else {
+                    loginToAccount(instruction);
+                }
+
+            } else {
+                displayNewAccountMenu();
+                instruction = input.next();
+                instruction = instruction.toLowerCase(Locale.ROOT);
+
+                if (instruction.equals("quit")) {
+                    save(jsonWriter, passwordManager);
+                    shouldEnd = true;
+                } else {
+                    createNewAccount(instruction);
+                }
+            }
+        }
+    }
+
+    // EFFECTS: returns true if there is already an existing account
+    private Boolean accountExists() {
+        File jsonFile = new File(FILE_PATHNAME);
+        return jsonFile.exists();
+    }
+
+    // EFFECTS: display opening menu in terminal
+    private void displayLoginMenu() {
+        System.out.println("\nWelcome to MyPasswordManager");
+        System.out.println("\nPlease select from one of the following:");
+        System.out.println("\tLogin to MyPasswordManager -> login");
+        System.out.println("\tDelete save -> delete");
+        System.out.println("\tQuit MyPasswordManager -> quit");
+    }
+
+    private void displayNewAccountMenu() {
+        System.out.println("\nWelcome to MyPasswordManager");
+        System.out.println("\nPlease select from one of the following:");
+        System.out.println("\tCreate new MyPasswordManager account -> new");
+        System.out.println("\tQuit MyPasswordManager -> quit");
+    }
+
+    // EFFECTS: login to account if given correct password, otherwise do nothing
+    private void loginToAccount(String instruction) {
+        if (Objects.equals(instruction, "login")) {
+            System.out.println("Please enter your password:");
+            String password = input.next();
+
+            Boolean passwordIsCorrect = correctPassword(password);
+
+            if (passwordIsCorrect) {
+                runMainMenu();
+            }
+
+        } else {
+            System.out.println(BAD_INPUT_MESSAGE);
+        }
+    }
+
+    // EFFECTS: returns true if the given password is correct, false otherwise
+    private Boolean correctPassword(String password) {
+        return Objects.equals(password, passwordManager.getPassword());
+    }
+
+    // EFFECTS: delete file with PATHNAME
+    private Boolean deleteFile() throws IOException {
+        File jsonFile = new File(FILE_PATHNAME);
+        return jsonFile.delete();
+    }
+
+    // EFFECTS: create new password manager account
+    private void createNewAccount(String instruction) {
+        if (Objects.equals(instruction, "new")) {
+            System.out.println("Please enter a password for your new MyPasswordManager account:");
+            String password = input.next();
+            passwordManager = new AccountRepository(password);
+            runMainMenu();
+        } else {
+            System.out.println(BAD_INPUT_MESSAGE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads account repository from saved file
+    private void loadFromSave(JsonReader jsonReader) {
+        try {
+            passwordManager = jsonReader.readAccounts();
+        } catch (IOException e) {
+            System.out.println("Could not find file");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: runs the main menu
+    private void runMainMenu() {
+        boolean shouldEnd = false;
+        String instruction;
 
         while (!shouldEnd) {
             displayMainMenu();
@@ -40,6 +169,17 @@ public class PasswordManagerApp {
             } else {
                 processInstruction(instruction);
             }
+        }
+    }
+
+    // EFFECTS: writes the given AccountRepository to FILE_PATHNAME
+    private void save(JsonWriter jsonWriter, AccountRepository ar) {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(ar);
+            jsonWriter.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not find file: " + FILE_PATHNAME);
         }
     }
 

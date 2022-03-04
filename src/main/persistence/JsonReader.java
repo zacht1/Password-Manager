@@ -62,11 +62,11 @@ public class JsonReader {
     // MODIFIES: accounts
     // EFFECTS: parses an AccountCard from JSONObject and adds it to accounts
     public void addAccountCard(AccountRepository accounts, JSONObject jsonObject) {
-        String title = jsonObject.getString("title");
-        String login = jsonObject.getString("login");
-        String password = jsonObject.getString("password");
-        String email = jsonObject.getString("email");
-        String url = jsonObject.getString("url");
+        String title = readTitle(jsonObject);
+        String login = readLogin(jsonObject);
+        String password = readPassword(jsonObject);
+        String email = readEmail(jsonObject);
+        String url = readUrl(jsonObject);
 
         AccountCard accountCard = new AccountCard(title);
         accountCard.setLogin(login);
@@ -76,4 +76,51 @@ public class JsonReader {
 
         accounts.addCard(accountCard);
     }
+
+    // EFFECTS: if key: "title" exists, returns the string under the key: "title", otherwise returns null
+    public String readTitle(JSONObject jsonObject) {
+        if (jsonObject.has("title")) {
+            return jsonObject.getString("title");
+        } else {
+            return null;
+        }
+    }
+
+    // EFFECTS: if key: "login" exists, returns the string under the key: "login", otherwise returns null
+    public String readLogin(JSONObject jsonObject) {
+        if (jsonObject.has("login")) {
+            return jsonObject.getString("login");
+        } else {
+            return null;
+        }
+    }
+
+    // EFFECTS: if key: "password" exists, returns the string under the key: "password", otherwise returns null
+    public String readPassword(JSONObject jsonObject) {
+        if (jsonObject.has("password")) {
+            return jsonObject.getString("password");
+        } else {
+            return null;
+        }
+    }
+
+    // EFFECTS: if key: "email" exists, returns the string under the key: "email", otherwise returns null
+    public String readEmail(JSONObject jsonObject) {
+        if (jsonObject.has("email")) {
+            return jsonObject.getString("email");
+        } else {
+            return null;
+        }
+    }
+
+    // EFFECTS: if key: "url" exists, returns the string under the key: "url", otherwise returns null
+    public String readUrl(JSONObject jsonObject) {
+        if (jsonObject.has("url")) {
+            return jsonObject.getString("url");
+        } else {
+            return null;
+        }
+    }
+
+
 }
