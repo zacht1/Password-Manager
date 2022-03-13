@@ -1,9 +1,7 @@
 package ui.windows;
 
-import ui.windows.popups.WrongPasswordDialogBox;
+import ui.windows.popups.PasswordDialogBox;
 import ui.windows.tools.PasswordPrompt;
-
-import javax.swing.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +48,7 @@ public class LoginWindow extends JFrame implements ActionListener, KeyListener {
     private void setupPasswordField() {
         new PasswordPrompt("Enter your password", passwordField);
         passwordField.setBounds(107, 205, 210, 28);
-        passwordField.setFont(new Font("Dialog", Font.CENTER_BASELINE, 14));
+        passwordField.setFont(new Font("Dialog", Font.BOLD, 14));
         passwordField.setToolTipText("Enter master password");
         passwordField.addKeyListener(this);
         passwordField.addActionListener(this);
@@ -66,7 +64,7 @@ public class LoginWindow extends JFrame implements ActionListener, KeyListener {
     // MODIFIES: passwordField
     // EFFECTS: hides the password, by setting echo character to '•'
     private void hidePassword() {
-        passwordField.setFont(new Font("Dialog", Font.CENTER_BASELINE, 14));
+        passwordField.setFont(new Font("Dialog", Font.BOLD, 14));
         passwordField.setEchoChar('•');
     }
 
@@ -99,6 +97,7 @@ public class LoginWindow extends JFrame implements ActionListener, KeyListener {
     // MODIFIES: this
     // EFFECTS: sets up all necessary attributes of the login window
     private void setupWindow() {
+        this.getRootPane().setDefaultButton(loginButton);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setSize(500,350);
         this.setLocationRelativeTo(null);
@@ -121,7 +120,7 @@ public class LoginWindow extends JFrame implements ActionListener, KeyListener {
                 System.out.println(numAttempts);
             } else {
                 numAttempts++;
-                new WrongPasswordDialogBox(this);
+                new PasswordDialogBox("Wrong password",this);
             }
         }
     }
