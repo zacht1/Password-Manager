@@ -22,23 +22,27 @@ public class JsonWriterTest extends JsonTest{
 
     @Test
     public void testInvalidDestinationFile() {
-        testJsonWriter = new JsonWriter("./data/illegal\0\filename.json");
+        testJsonWriter = new JsonWriter("./data/illegal\0\filename.json",
+                "./data/illegal\0\filename12.json");
         assertThrows(FileNotFoundException.class, testJsonWriter::open, "FileNotFoundException was expected");
     }
 
     @Test
     public void testEmptyAccountRepository() {
-        testJsonWriter = new JsonWriter("./data/testEmptyWriter");
+        testJsonWriter = new JsonWriter("./data/testEmptyWriter.json",
+                "./data/testPasswordWriter.json");
 
         try {
             testJsonWriter.open();
             testJsonWriter.write(testAR);
             testJsonWriter.close();
 
-            testJsonReader = new JsonReader("./data/testEmptyWriter");
+            testJsonReader = new JsonReader("./data/testEmptyWriter.json",
+                    "./data/testPasswordWriter.json");
             AccountRepository accounts = testJsonReader.readAccounts();
+            accounts.setMasterPassword(testJsonReader.readMasterPassword());
 
-            assertEquals("password", accounts.getPassword());
+            assertEquals("password", accounts.getMasterPassword());
             assertEquals(0, accounts.numAccounts());
 
         } catch (FileNotFoundException e) {
@@ -50,7 +54,8 @@ public class JsonWriterTest extends JsonTest{
 
     @Test
     public void testNonEmptyAccountRepository() {
-        testJsonWriter = new JsonWriter("./data/testNonEmptyWriter");
+        testJsonWriter = new JsonWriter("./data/testNonEmptyWriter.json",
+                "./data/testPasswordWriter.json");
         testAR.addCard(createCard("Netflix", "Guest123", "1qaz2wsx", "jimbo@gmail.com",
                 "netflix.com"));
         testAR.addCard(createCard("UBC Student Services Center", "cwlName", "password",
@@ -61,10 +66,12 @@ public class JsonWriterTest extends JsonTest{
             testJsonWriter.write(testAR);
             testJsonWriter.close();
 
-            JsonReader reader = new JsonReader("./data/testNonEmptyWriter");
+            JsonReader reader = new JsonReader("./data/testNonEmptyWriter.json",
+                    "./data/testPasswordWriter.json");
             AccountRepository accounts = reader.readAccounts();
+            accounts.setMasterPassword(reader.readMasterPassword());
 
-            assertEquals("password", accounts.getPassword());
+            assertEquals("password", accounts.getMasterPassword());
             assertEquals(2, accounts.numAccounts());
             checkCard("Netflix", "Guest123", "1qaz2wsx", "jimbo@gmail.com",
                     "netflix.com", accounts.getAccounts().get(0));

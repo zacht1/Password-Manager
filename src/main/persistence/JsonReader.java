@@ -11,24 +11,34 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-// represents a reader, which reads AccountRepository from source file
+// represents a reader, which reads AccountRepository from sourceAccounts file
 // Credit: This class is based on the code from the JsonReader class in JsonSerializationDemo
 public class JsonReader {
-    private String source;
+    private String sourceAccounts;
+    private String sourcePassword;
 
-    // EFFECTS: constructs a reader to read from the source file
-    public JsonReader(String source) {
-        this.source = source;
+    // EFFECTS: constructs a reader to read from the sourceAccounts file
+    public JsonReader(String sourceAccounts, String sourcePassword) {
+        this.sourceAccounts = sourceAccounts;
+        this.sourcePassword = sourcePassword;
     }
 
-    // EFFECTS: reads AccountRepository from file and returns it, throws IOException if cannot read from source file
+    // EFFECTS: reads AccountRepository from file and returns it,
+    //          throws IOException if cannot read from sourceAccounts file
     public AccountRepository readAccounts() throws IOException {
-        String data = readString(source);
+        String data = readString(sourceAccounts);
         JSONObject jsonObject = new JSONObject(data);
         return parseAccountRepository(jsonObject);
     }
 
-    // EFFECTS: reads the source file as a string a returns it, throws IOException if cannot read from source file
+    public String readMasterPassword() throws IOException {
+        String data = readString(sourcePassword);
+        JSONObject jsonObject = new JSONObject(data);
+        return jsonObject.getString("password");
+    }
+
+    // EFFECTS: reads the sourceAccounts file as a string a returns it, throws IOException if
+    //          cannot read from sourceAccounts file
     public String readString(String source) throws IOException {
         StringBuilder dataBuilder = new StringBuilder();
 
@@ -41,8 +51,7 @@ public class JsonReader {
 
     // EFFECTS: reads AccountRepository from JSONObject and returns it
     public AccountRepository parseAccountRepository(JSONObject jsonObject) {
-        String password = jsonObject.getString("password");
-        AccountRepository accounts = new AccountRepository(password);
+        AccountRepository accounts = new AccountRepository(null);
         addAccountCards(accounts, jsonObject);
 
         return accounts;
@@ -117,6 +126,4 @@ public class JsonReader {
             return null;
         }
     }
-
-
 }

@@ -17,7 +17,8 @@ import java.util.Scanner;
 // Credit: Much of the scanner/user interaction/console code in this class is influenced by the TellerApp sample project
 public class PasswordManagerApp {
     private static final String BAD_INPUT_MESSAGE = "... unknown input";
-    private static final String FILE_PATHNAME = "./data/myPasswordManager.json";
+    private static final String FILE_PATHNAME_ACCOUNTS = "./data/myPasswordManager.json";
+    private static final String FILE_PATHNAME_PASSWORD = "./data/myPasswordManagerPassword.json";
 
     private AccountRepository passwordManager;
     private Scanner input;
@@ -37,8 +38,8 @@ public class PasswordManagerApp {
         String instruction;
 
         input = new Scanner(System.in);
-        jsonWriter = new JsonWriter(FILE_PATHNAME);
-        jsonReader = new JsonReader(FILE_PATHNAME);
+        jsonWriter = new JsonWriter(FILE_PATHNAME_ACCOUNTS, FILE_PATHNAME_PASSWORD);
+        jsonReader = new JsonReader(FILE_PATHNAME_ACCOUNTS, FILE_PATHNAME_PASSWORD);
 
         Boolean existingAccount = accountExists();
 
@@ -83,8 +84,9 @@ public class PasswordManagerApp {
 
     // EFFECTS: returns true if there is already an existing account
     private Boolean accountExists() {
-        File jsonFile = new File(FILE_PATHNAME);
-        return jsonFile.exists();
+        File jsonAccountsFile = new File(FILE_PATHNAME_ACCOUNTS);
+        File jsonPasswordFile = new File(FILE_PATHNAME_PASSWORD);
+        return jsonAccountsFile.exists() && jsonPasswordFile.exists();
     }
 
     // EFFECTS: display opening menu in terminal
@@ -122,13 +124,14 @@ public class PasswordManagerApp {
 
     // EFFECTS: returns true if the given password is correct, false otherwise
     private Boolean correctPassword(String password) {
-        return Objects.equals(password, passwordManager.getPassword());
+        return Objects.equals(password, passwordManager.getMasterPassword());
     }
 
     // EFFECTS: delete file with PATHNAME
     private Boolean deleteFile() throws IOException {
-        File jsonFile = new File(FILE_PATHNAME);
-        return jsonFile.delete();
+        File jsonAccountsFile = new File(FILE_PATHNAME_ACCOUNTS);
+        File jsonPasswordsFile = new File(FILE_PATHNAME_PASSWORD);
+        return jsonAccountsFile.delete() & jsonPasswordsFile.delete();
     }
 
     // EFFECTS: create new password manager account
@@ -148,6 +151,7 @@ public class PasswordManagerApp {
     private void loadFromSave(JsonReader jsonReader) {
         try {
             passwordManager = jsonReader.readAccounts();
+            passwordManager.setMasterPassword(jsonReader.readMasterPassword());
         } catch (IOException e) {
             System.out.println("Could not find file");
         }
@@ -179,7 +183,7 @@ public class PasswordManagerApp {
             jsonWriter.write(ar);
             jsonWriter.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Could not find file: " + FILE_PATHNAME);
+            System.out.println("Could not find file: " + FILE_PATHNAME_ACCOUNTS);
         }
     }
 

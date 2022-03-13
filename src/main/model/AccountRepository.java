@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// Represents a list of all the account cards in the password manager, and a password to access the list
+// Represents a list of all the account cards in the masterPassword manager, and a masterPassword to access the list
 public class AccountRepository implements JsonFormat {
     private List<AccountCard> accounts;
-    private String password;
+    private String masterPassword;
 
     // EFFECTS: initializes AccountRepository with an empty list of accounts
     public AccountRepository(String password) {
-        this.password = password;
+        this.masterPassword = password;
         accounts = new ArrayList<>();
     }
 
@@ -69,9 +69,14 @@ public class AccountRepository implements JsonFormat {
     // credit: this method is based on the toJson method in JsonSerializationDemo WorkRoom class
     public JSONObject formatJson() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("password", password);
         jsonObject.put("accounts", formatCardsJson());
 
+        return jsonObject;
+    }
+
+    public JSONObject formatPasswordJson() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("masterPassword", masterPassword);
         return jsonObject;
     }
 
@@ -92,7 +97,11 @@ public class AccountRepository implements JsonFormat {
         return accounts;
     }
 
-    public String getPassword() {
-        return password;
+    public String getMasterPassword() {
+        return masterPassword;
+    }
+
+    public void setMasterPassword(String masterPassword) {
+        this.masterPassword = masterPassword;
     }
 }

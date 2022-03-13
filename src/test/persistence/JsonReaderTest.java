@@ -15,7 +15,8 @@ public class JsonReaderTest extends JsonTest{
 
     @Test
     public void testJsonReaderUnknownFile() {
-        jsonReader = new JsonReader("./data/testNonExistentFile.json");
+        jsonReader = new JsonReader("./data/testNonExistentFile.json",
+                "./data/testNonExistentFile2.json");
 
         assertThrows(IOException.class, () -> { AccountRepository accounts = jsonReader.readAccounts();
         }, "IOException was expected");
@@ -23,11 +24,13 @@ public class JsonReaderTest extends JsonTest{
 
     @Test
     public void testJsonReaderEmptyAccountRepository() {
-        jsonReader = new JsonReader("./data/testEmptyAccountRepository.json");
+        jsonReader = new JsonReader("./data/testEmptyAccountRepository.json",
+                "./data/testPassword.json");
 
         try {
             AccountRepository accounts = jsonReader.readAccounts();
-            assertEquals("1234abcd", accounts.getPassword());
+            accounts.setMasterPassword(jsonReader.readMasterPassword());
+            assertEquals("1234abcd", accounts.getMasterPassword());
             assertEquals(0, accounts.numAccounts());
         } catch (IOException e) {
             fail("Could not read from file");
@@ -36,11 +39,13 @@ public class JsonReaderTest extends JsonTest{
 
     @Test
     public void testJsonReaderNonEmptyAccountRepository() {
-        jsonReader = new JsonReader("./data/testNonEmptyAccountRepository.json");
+        jsonReader = new JsonReader("./data/testNonEmptyAccountRepository.json",
+                "./data/testPassword.json");
 
         try {
             AccountRepository accounts = jsonReader.readAccounts();
-            assertEquals("password", accounts.getPassword());
+            accounts.setMasterPassword(jsonReader.readMasterPassword());
+            assertEquals("1234abcd", accounts.getMasterPassword());
             assertEquals(2, accounts.numAccounts());
             checkCard("Google", null, "12345abcd", null, null,
                     accounts.getAccounts().get(0));
@@ -53,11 +58,13 @@ public class JsonReaderTest extends JsonTest{
 
     @Test
     public void testJsonReaderFullAccountRepository() {
-        jsonReader = new JsonReader("./data/testFullAccountRepository.json");
+        jsonReader = new JsonReader("./data/testFullAccountRepository.json",
+                "./data/testPassword.json");
 
         try {
             AccountRepository accounts = jsonReader.readAccounts();
-            assertEquals("1234abcd", accounts.getPassword());
+            accounts.setMasterPassword(jsonReader.readMasterPassword());
+            assertEquals("1234abcd", accounts.getMasterPassword());
             assertEquals(2, accounts.numAccounts());
             checkCard("Google", "Guest", "password", "guest@gmail.com", "google.com",
                     accounts.getAccounts().get(0));
