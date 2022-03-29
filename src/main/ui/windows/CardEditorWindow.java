@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 // represents the card editing window
 public class CardEditorWindow extends JFrame implements ActionListener {
@@ -196,6 +198,16 @@ public class CardEditorWindow extends JFrame implements ActionListener {
         this.add(rightPanel, BorderLayout.EAST);
         this.add(leftPanel, BorderLayout.WEST);
         this.setVisible(true);
+
+        this.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                mainWindow.setEditorWindowOpen(false);
+            }
+
+        });
+
     }
 
     // MODIFIES: newCard, mainWindow, passwordManagerApp

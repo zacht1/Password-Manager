@@ -1,6 +1,5 @@
 package ui.windows;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import model.AccountCard;
 import ui.PasswordManagerApp;
 import ui.windows.panels.CardListPanel;
@@ -43,7 +42,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
     // MODIFIES: this
     // EFFECTS: creates a main window with given accounts, given app,
-    //          and sets the selected account to be the first in thelist
+    //          and sets the selected account to be the first in the list
     public MainWindow(List<AccountCard> accounts, PasswordManagerApp passwordManagerApp) {
         this.accounts = accounts;
         this.passwordManagerApp = passwordManagerApp;
@@ -79,9 +78,7 @@ public class MainWindow extends JFrame implements ActionListener {
         toolBar.add(deleteButton);
         toolBar.add(saveButton);
         toolBar.addSeparator();
-        toolBar.add(pinButton);
         toolBar.add(sortButton);
-        toolBar.addSeparator();
         toolBar.add(generatorButton);
         toolBar.addSeparator();
         toolBar.add(lockButton);
@@ -95,7 +92,6 @@ public class MainWindow extends JFrame implements ActionListener {
         setupEditButton();
         setupGeneratorButton();
         setupLockButton();
-        setupPinButton();
         setupSortButton();
         setupSettingsButton();
         setupSaveButton();
@@ -105,7 +101,8 @@ public class MainWindow extends JFrame implements ActionListener {
     // EFFECTS: instantiates addButton and sets up all necessary attributes
     private void setupAddButton() {
         addButton = new JButton();
-        addButton.setIcon(new FlatSVGIcon("ui/icons/addFile_dark.svg"));
+        addButton.setIcon(new ImageIcon("./images/icons/add_file.png"));
+        addButton.setBorderPainted(false);
         addButton.setToolTipText("Add new card");
         addButton.addActionListener(this);
     }
@@ -114,7 +111,8 @@ public class MainWindow extends JFrame implements ActionListener {
     // EFFECTS: instantiates editButton and sets up all necessary attributes
     private void setupEditButton() {
         editButton = new JButton();
-        editButton.setIcon(new FlatSVGIcon("ui/icons/edit_dark.svg"));
+        editButton.setIcon(new ImageIcon("./images/icons/edit.png"));
+        editButton.setBorderPainted(false);
         editButton.setToolTipText("Edit card");
         editButton.addActionListener(this);
     }
@@ -123,7 +121,8 @@ public class MainWindow extends JFrame implements ActionListener {
     // EFFECTS: instantiates deleteButton and sets up all necessary attributes
     private void setupDeleteButton() {
         deleteButton = new JButton();
-        deleteButton.setIcon(new FlatSVGIcon("ui/icons/gc.svg"));
+        deleteButton.setIcon(new ImageIcon("./images/icons/garbage.png"));
+        deleteButton.setBorderPainted(false);
         deleteButton.setToolTipText("Delete card");
         deleteButton.addActionListener(this);
     }
@@ -132,7 +131,8 @@ public class MainWindow extends JFrame implements ActionListener {
     // EFFECTS: instantiates lockButton and sets up all necessary attributes
     private void setupLockButton() {
         lockButton = new JButton();
-        lockButton.setIcon(new FlatSVGIcon("ui/icons/lock_dark.svg"));
+        lockButton.setIcon(new ImageIcon("./images/icons/lock.png"));
+        lockButton.setBorderPainted(false);
         lockButton.setToolTipText("Lock myPasswordManager");
         lockButton.addActionListener(this);
     }
@@ -141,7 +141,8 @@ public class MainWindow extends JFrame implements ActionListener {
     // EFFECTS: instantiates settingsButton and sets up all necessary attributes
     private void setupSettingsButton() {
         settingsButton = new JButton();
-        settingsButton.setIcon(new FlatSVGIcon("ui/icons/settings_dark.svg"));
+        settingsButton.setIcon(new ImageIcon("./images/icons/settings.png"));
+        settingsButton.setBorderPainted(false);
         settingsButton.setToolTipText("Preferences");
         settingsButton.addActionListener(this);
     }
@@ -150,7 +151,8 @@ public class MainWindow extends JFrame implements ActionListener {
     // EFFECTS: instantiates generatorButton and sets up all necessary attributes
     private void setupGeneratorButton() {
         generatorButton = new JButton();
-        generatorButton.setIcon(new FlatSVGIcon("ui/icons/cwmPermissions_dark.svg"));
+        generatorButton.setIcon(new ImageIcon("./images/icons/key.png"));
+        generatorButton.setBorderPainted(false);
         generatorButton.setToolTipText("Generate password");
         generatorButton.addActionListener(this);
     }
@@ -159,7 +161,8 @@ public class MainWindow extends JFrame implements ActionListener {
     // EFFECTS: instantiates sortButton and sets up all necessary attributes
     private void setupSortButton() {
         sortButton = new JButton();
-        sortButton.setIcon(new FlatSVGIcon("ui/icons/sortbyDuration_dark.svg"));
+        sortButton.setIcon(new ImageIcon("./images/icons/sort.png"));
+        sortButton.setBorderPainted(false);
         sortButton.setToolTipText("Sort accounts");
         sortButton.addActionListener(this);
     }
@@ -168,7 +171,8 @@ public class MainWindow extends JFrame implements ActionListener {
     // EFFECTS: instantiates pinButton and sets up all necessary attributes
     private void setupPinButton() {
         pinButton = new JButton();
-        pinButton.setIcon(new FlatSVGIcon("ui/icons/pin_dark.svg"));
+        pinButton.setIcon(new ImageIcon("./images/icons/pin.png"));
+        pinButton.setBorderPainted(false);
         pinButton.setToolTipText("Pin card");
         pinButton.addActionListener(this);
     }
@@ -177,7 +181,8 @@ public class MainWindow extends JFrame implements ActionListener {
     // EFFECTS: instantiates saveButton and sets up all necessary attributes
     private void setupSaveButton() {
         saveButton = new JButton();
-        saveButton.setIcon(new FlatSVGIcon("ui/icons/menu-saveall_dark.svg"));
+        saveButton.setIcon(new ImageIcon("./images/icons/save_file.png"));
+        saveButton.setBorderPainted(false);
         saveButton.setToolTipText("Save");
         saveButton.addActionListener(this);
     }

@@ -7,6 +7,7 @@ import ui.windows.AccountCreatorWindow;
 import ui.windows.LoginWindow;
 import ui.windows.MainWindow;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,6 +24,10 @@ public class PasswordManagerApp {
     // EFFECTS: creates password manager app
     public PasswordManagerApp() {
         runPasswordManager();
+
+        InputMap im = (InputMap)UIManager.get("Button.focusInputMap");
+        im.put(KeyStroke.getKeyStroke("pressed SPACE"), "none");
+        im.put(KeyStroke.getKeyStroke("released SPACE"), "none");
     }
 
     // EFFECTS: runs password manager app

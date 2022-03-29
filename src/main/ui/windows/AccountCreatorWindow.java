@@ -118,7 +118,7 @@ public class AccountCreatorWindow extends JFrame implements ActionListener, KeyL
     // MODIFIES: checkBox
     // EFFECTS: sets up all necessary attributes of the show password check-box
     private void setupCheckBox() {
-        checkBox.setBounds(125,152,117,15);
+        checkBox.setBounds(125,152,130,15);
         checkBox.setText("Show password");
         checkBox.setFocusable(false);
         checkBox.addActionListener(this);

@@ -1,6 +1,5 @@
 package ui.windows;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import ui.PasswordManagerApp;
 import ui.windows.popups.OverwriteAccountDialogBox;
 import ui.windows.popups.WrongPasswordDialogBox;
@@ -81,7 +80,7 @@ public class LoginWindow extends JFrame implements ActionListener, KeyListener {
         loginButton.addActionListener(this);
 
         settingsButton.setBounds(476, 4,20,20);
-        settingsButton.setIcon(new FlatSVGIcon("ui/icons/add.svg"));
+        settingsButton.setIcon(new ImageIcon("./images/icons/add.png"));
         settingsButton.setToolTipText("Create new account");
         settingsButton.setBorderPainted(false);
         settingsButton.setFocusable(false);
@@ -99,7 +98,7 @@ public class LoginWindow extends JFrame implements ActionListener, KeyListener {
     // MODIFIES: checkBox
     // EFFECTS: sets up all necessary attributes of the show password check-box
     private void setupCheckBox() {
-        checkBox.setBounds(107,240,117,15);
+        checkBox.setBounds(103,240,130,15);
         checkBox.setText("Show password");
         checkBox.setFocusable(false);
         checkBox.addActionListener(this);

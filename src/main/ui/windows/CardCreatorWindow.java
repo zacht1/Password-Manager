@@ -189,6 +189,15 @@ public class CardCreatorWindow extends JFrame implements ActionListener {
         this.add(rightPanel, BorderLayout.EAST);
         this.add(leftPanel, BorderLayout.WEST);
         this.setVisible(true);
+
+        this.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                mainWindow.setCreatorWindowOpen(false);
+            }
+
+        });
     }
 
     // MODIFIES: card, mainWindow, passwordManagerApp

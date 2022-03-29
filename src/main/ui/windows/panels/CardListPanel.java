@@ -1,6 +1,5 @@
 package ui.windows.panels;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import model.AccountCard;
 import ui.windows.MainWindow;
 
@@ -87,7 +86,7 @@ public class CardListPanel extends JPanel implements ActionListener {
         button.setHorizontalTextPosition(SwingConstants.RIGHT);
         button.setText(card.getTitle());
         button.setFont(new Font("Helvetica Neue", Font.BOLD, 15));
-        button.setIcon(new FlatSVGIcon("ui/icons/TemplateWebApp.svg"));
+        button.setIcon(new ImageIcon("./images/icons/web_icon.png"));
         button.setIconTextGap(10);
         button.setMaximumSize(new Dimension(243, BUTTON_HEIGHT));
         button.setPreferredSize(new Dimension(243, BUTTON_HEIGHT));

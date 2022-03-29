@@ -1,6 +1,5 @@
 package ui.windows.panels;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import model.AccountCard;
 
 import javax.swing.*;
@@ -157,7 +156,7 @@ public class CardViewPanel extends JPanel implements ActionListener {
     // EFFECTS: sets up the password panel with all necessary attributes and components
     private void setupPasswordPanel() {
         button = new JToggleButton();
-        button.setIcon(new FlatSVGIcon("ui/icons/show_dark.svg"));
+        button.setIcon(new ImageIcon("./images/icons/show.png"));
         button.setBounds(500, 18, 28,28);
         button.putClientProperty("JButton.buttonType", "borderless");
         button.addActionListener(this);
