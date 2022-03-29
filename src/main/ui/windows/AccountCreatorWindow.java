@@ -1,18 +1,19 @@
 package ui.windows;
 
-import ui.windows.popups.PasswordDialogBox;
+import ui.PasswordManagerApp;
+import ui.windows.popups.PasswordMatchDialogBox;
 import ui.windows.tools.PasswordPrompt;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.Arrays;
 
+// represents the creation window for a new MyPasswordManager account
 public class AccountCreatorWindow extends JFrame implements ActionListener, KeyListener {
-    private static final String LOGO_FILE = "./images/blue_logo_small.png";
+    private static final String LOGO_FILE = "images/blue_logo_small.png";
+
+    private final PasswordManagerApp passwordManagerApp;
 
     private JPasswordField passwordField1;
     private JPasswordField passwordField2;
@@ -25,7 +26,8 @@ public class AccountCreatorWindow extends JFrame implements ActionListener, KeyL
 
 
     // EFFECTS: creates the login window
-    public AccountCreatorWindow() {
+    public AccountCreatorWindow(PasswordManagerApp passwordManagerApp) {
+        this.passwordManagerApp = passwordManagerApp;
         runWindow();
     }
 
@@ -102,11 +104,12 @@ public class AccountCreatorWindow extends JFrame implements ActionListener, KeyL
         iconLabel.setOpaque(true);
     }
 
+    // MODIFIES: titleLabel, subtitleLabel
+    // EFFECTS: sets up all necessary attributes of titleLabel and subtitleLabel
     private void setUpLabels() {
         titleLabel.setBounds(130,35,500,50);
         titleLabel.setText("MyPasswordManager");
         titleLabel.setFont(new Font("Helvetica Neue", Font.BOLD, 25));
-
         subtitleLabel.setBounds(130, 75, 300,30);
         subtitleLabel.setText("Create your password database:");
         subtitleLabel.setFont(new Font("Helvetica Neue", Font.BOLD, 13));
@@ -141,14 +144,15 @@ public class AccountCreatorWindow extends JFrame implements ActionListener, KeyL
         this.setVisible(true);
     }
 
-    // MODIFIES:
-    // EFFECTS:
+    // EFFECTS: if a password was entered, and the two password fields contain the same password,
+    //          then close this window and set up new account
     private void checkPassword() {
         if (passwordField1.getPassword().length > 0) {
             if (Arrays.equals(passwordField1.getPassword(), passwordField2.getPassword())) {
-                System.out.println("Correct!");
+                this.dispose();
+                passwordManagerApp.setupNewAccount(String.valueOf(passwordField1.getPassword()));
             } else {
-                new PasswordDialogBox("Passwords don't match", this);
+                new PasswordMatchDialogBox(this);
             }
         }
     }

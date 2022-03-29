@@ -1,43 +1,47 @@
 package ui.windows;
 
-import ui.windows.popups.PasswordDialogBox;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import ui.PasswordManagerApp;
+import ui.windows.popups.OverwriteAccountDialogBox;
+import ui.windows.popups.WrongPasswordDialogBox;
 import ui.windows.tools.PasswordPrompt;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
+// represents the login window of the application
 public class LoginWindow extends JFrame implements ActionListener, KeyListener {
-    private static final String LOGO_FILE = "./images/blue_logo.png";
-    private static final String MASTER_PASSWORD = "password";
+    private static final String LOGO_FILE = "images/blue_logo.png";
 
-    private JPasswordField passwordField;
-    private JButton loginButton;
-    private JLabel iconLabel;
-    private ImageIcon icon;
-    private JCheckBox checkBox;
-    private int numAttempts;
+    private final PasswordManagerApp passwordManagerApp;
+    private final JPasswordField passwordField;
+    private final JButton loginButton;
+    private final JButton settingsButton;
+    private final JLabel iconLabel;
+    private final ImageIcon icon;
+    private final JCheckBox checkBox;
+    private final String masterPassword;
 
 
     // EFFECTS: creates the login window
-    public LoginWindow() {
+    public LoginWindow(String masterPassword, PasswordManagerApp passwordManagerApp) {
+        this.passwordManagerApp = passwordManagerApp;
+        this.masterPassword = masterPassword;
+        passwordField = new JPasswordField();
+        loginButton = new JButton();
+        settingsButton = new JButton();
+        iconLabel = new JLabel();
+        icon = new ImageIcon(LOGO_FILE);
+        checkBox = new JCheckBox();
         runWindow();
     }
 
     // MODIFIES: this
     // EFFECTS: instantiates fields, and runs the login window and all its components
-    private void runWindow() {
-        passwordField = new JPasswordField();
-        loginButton = new JButton();
-        iconLabel = new JLabel();
-        icon = new ImageIcon(LOGO_FILE);
-        checkBox = new JCheckBox();
-
+    public void runWindow() {
         setupPasswordField();
-        setupLoginButton();
+        setupButtons();
         setupIcon();
         setupCheckBox();
         setupWindow();
@@ -70,11 +74,18 @@ public class LoginWindow extends JFrame implements ActionListener, KeyListener {
 
     // MODIFIES: loginButton
     // EFFECTS: sets up all necessary attributes of loginButton
-    private void setupLoginButton() {
+    private void setupButtons() {
         loginButton.setBounds(327,205,75,28);
         loginButton.setText("Login");
         loginButton.setFont(new Font("Arial", Font.PLAIN, 12));
         loginButton.addActionListener(this);
+
+        settingsButton.setBounds(476, 4,20,20);
+        settingsButton.setIcon(new FlatSVGIcon("ui/icons/add.svg"));
+        settingsButton.setToolTipText("Create new account");
+        settingsButton.setBorderPainted(false);
+        settingsButton.setFocusable(false);
+        settingsButton.addActionListener(this);
     }
 
     // MODIFIES: iconLabel
@@ -104,6 +115,7 @@ public class LoginWindow extends JFrame implements ActionListener, KeyListener {
         this.setTitle("MyPasswordManager");
         this.setResizable(false);
         this.setLayout(null);
+        this.add(settingsButton);
         this.add(passwordField);
         this.add(loginButton);
         this.add(iconLabel);
@@ -111,19 +123,25 @@ public class LoginWindow extends JFrame implements ActionListener, KeyListener {
         this.setVisible(true);
     }
 
-    // MODIFIES:
-    // EFFECTS:
-    private void checkPassword() {
+    // MODIFIES: this
+    // EFFECTS: checks if the password is correct, if it is then it opens the main window, if it isn't then it
+    //          displays a pop-up informing user that the password is incorrect
+    public void checkPassword() {
         if (passwordField.getPassword().length > 0) {
-            if (String.valueOf(passwordField.getPassword()).equals(MASTER_PASSWORD)) {
-                System.out.println("Correct!");
-                System.out.println(numAttempts);
+            if (String.valueOf(passwordField.getPassword()).equals(masterPassword)) {
+                passwordManagerApp.runMainWindow();
+                this.dispose();
             } else {
-                numAttempts++;
-                new PasswordDialogBox("Wrong password",this);
+                new WrongPasswordDialogBox("Wrong password",this);
             }
         }
     }
+
+    // getters & setters
+    public PasswordManagerApp getPasswordManagerApp() {
+        return passwordManagerApp;
+    }
+
 
     /**
      * Invoked when an action occurs.
@@ -138,6 +156,9 @@ public class LoginWindow extends JFrame implements ActionListener, KeyListener {
             showPassword();
         } else {
             hidePassword();
+        }
+        if (settingsButton.equals(e.getSource())) {
+            new OverwriteAccountDialogBox(this);
         }
     }
 

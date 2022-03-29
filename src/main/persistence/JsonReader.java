@@ -34,7 +34,7 @@ public class JsonReader {
     public String readMasterPassword() throws IOException {
         String data = readString(sourcePassword);
         JSONObject jsonObject = new JSONObject(data);
-        return jsonObject.getString("password");
+        return jsonObject.getString("masterPassword");
     }
 
     // EFFECTS: reads the sourceAccounts file as a string a returns it, throws IOException if

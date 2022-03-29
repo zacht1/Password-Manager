@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
+// Class copied from https://tips4java.wordpress.com/2009/11/29/text-prompt/
+// Rob Camick
+
 /**
  *  The TextPrompt class will display a prompt over top of a text component when
  *  the Document of the text field is empty. The Show property is used to

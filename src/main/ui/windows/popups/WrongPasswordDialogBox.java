@@ -6,16 +6,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 
-public class PasswordDialogBox implements ActionListener {
-    private static final String SMALL_LOGO_FILE = "./images/blue_logo_small.png";
+// represents a pop-up dialog box that informs user that they have entered the wrong password
+public class WrongPasswordDialogBox implements ActionListener {
+    private static final String SMALL_LOGO_FILE = "images/blue_logo_small.png";
 
-    private JDialog dialogBox;
+    private final JDialog dialogBox;
     private JLabel label;
     private JLabel icon;
     private JButton button;
-    private ImageIcon img;
 
-    public PasswordDialogBox(String text, JFrame frame) {
+    // MODIFIES: dialogBox
+    // EFFECTS: sets up the wrong password dialog box and all its necessary attributes and components
+    public WrongPasswordDialogBox(String text, JFrame frame) {
         setupButton();
         setupLabel(text);
         setupIcon();
@@ -46,7 +48,7 @@ public class PasswordDialogBox implements ActionListener {
     // EFFECTS: setup all necessary attributes of the wrong password label
     private void setupLabel(String text) {
         label = new JLabel(text, SwingConstants.CENTER);
-        label.setBounds(62, 72, 230, 30);
+        label.setBounds(62, 72, 106, 30);
         label.setFont(new Font("Helvetica Neue", Font.BOLD, 13));
     }
 
@@ -54,7 +56,7 @@ public class PasswordDialogBox implements ActionListener {
     // EFFECTS: setup all necessary attributes of the icon label
     private void setupIcon() {
         icon = new JLabel();
-        img = new ImageIcon(SMALL_LOGO_FILE);
+        ImageIcon img = new ImageIcon(SMALL_LOGO_FILE);
         icon.setIcon(img);
         icon.setBounds(75,-5,100,100);
     }

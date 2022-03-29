@@ -31,3 +31,8 @@ masterPassword managers work, and how they protect users' passwords.
 ## Phase 2 User Stories
 - As a user, I want to be able to load my masterPassword manager from file when I give the correct masterPassword
 - As a user, I want my masterPassword manager to automatically save to file when I close the application
+
+### Sources & Acknowledgments
+- Logo images from https://www.canva.com/
+- Icons from https://jetbrains.design/intellij/resources/icons_list/
+- Java Swing look and feel & Java Swing SVG icon from https://www.formdev.com/flatlaf/
