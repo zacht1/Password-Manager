@@ -1,8 +1,6 @@
 package ui;
 
 import model.AccountRepository;
-import model.logging.Event;
-import model.logging.EventLog;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 import ui.windows.AccountCreatorWindow;
@@ -94,7 +92,6 @@ public class PasswordManagerApp {
     public void setupNewAccount(String password) {
         passwordManager = new AccountRepository(password);
         mainWindow = new MainWindow(passwordManager.getAccounts(), this);
-        EventLog.getInstance().logEvent(new Event("New MyPasswordManager account created"));
     }
 
     // MODIFIES: mainWindow

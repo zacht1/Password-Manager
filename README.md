@@ -32,6 +32,39 @@ masterPassword managers work, and how they protect users' passwords.
 - As a user, I want to be able to load my masterPassword manager from file when I give the correct masterPassword
 - As a user, I want my masterPassword manager to automatically save to file when I close the application
 
+## Phase 4: Task 2
+Wed Mar 30 15:15:11 PDT 2022\
+Amazon card added to the account card repository
+
+Wed Mar 30 15:15:19 PDT 2022\
+Netflix card added to the account card repository
+
+Wed Mar 30 15:15:27 PDT 2022\
+Apple card added to the account card repository
+
+Wed Mar 30 15:15:40 PDT 2022\
+AirCanada Aeroplan card added to the account card repository
+
+Wed Mar 30 15:16:06 PDT 2022\
+Facebook card added to the account card repository
+
+Wed Mar 30 15:16:09 PDT 2022\
+Google card deleted from the account repository
+
+Wed Mar 30 15:16:19 PDT 2022\
+Netflix card login changed
+
+Wed Mar 30 15:16:19 PDT 2022\
+Netflix card password changed
+
+Wed Mar 30 15:16:25 PDT 2022\
+Facebook card login changed
+
+Wed Mar 30 15:16:31 PDT 2022\
+AirCanada Aeroplan card website URL changed
+
+
+
 ### Sources & Acknowledgments
 - Logo images from https://www.canva.com/
 - Icons from https://jetbrains.design/intellij/resources/icons_list/
