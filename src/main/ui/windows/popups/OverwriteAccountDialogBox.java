@@ -1,5 +1,6 @@
 package ui.windows.popups;
 
+import model.logging.EventLog;
 import ui.windows.LoginWindow;
 
 import javax.swing.*;
@@ -78,6 +79,7 @@ public class OverwriteAccountDialogBox implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == okButton) {
             loginWindow.getPasswordManagerApp().runAccountCreatorWindow();
+            EventLog.getInstance().clear();
             dialogBox.dispatchEvent(new WindowEvent(dialogBox, WindowEvent.WINDOW_CLOSING));
             loginWindow.dispose();
         }

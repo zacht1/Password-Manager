@@ -208,7 +208,7 @@ public class CardCreatorWindow extends JFrame implements ActionListener {
         card.setPassword(String.valueOf(passwordField.getPassword()));
         card.setEmail(emailField.getText());
         card.setUrl(urlField.getText());
-        passwordManagerApp.getPasswordManager().addCard(card);
+        passwordManagerApp.getPasswordManager().addNewCard(card);
         mainWindow.getCardListPanel().addCard(card);
     }
 

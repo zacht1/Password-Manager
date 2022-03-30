@@ -214,15 +214,63 @@ public class CardEditorWindow extends JFrame implements ActionListener {
     // EFFECTS: updates the current card being edited in the mainWindow and the passwordManagerApp
     private void updateCard() {
         AccountCard newCard = new AccountCard(titleField.getText());
-        newCard.setLogin(loginField.getText());
-        newCard.setPassword(String.valueOf(passwordField.getPassword()));
-        newCard.setEmail(emailField.getText());
-        newCard.setUrl(urlField.getText());
-        passwordManagerApp.getPasswordManager().deleteSpecificCard(card.getTitle());
+
+        updateCardTitle(newCard);
+        updateCardLogin(newCard);
+        updateCardPassword(newCard);
+        updateCardEmail(newCard);
+        updateCardUrl(newCard);
+
+        passwordManagerApp.getPasswordManager().deleteCardWithoutLogging(card);
         passwordManagerApp.getPasswordManager().addCard(newCard);
         mainWindow.setSelectedAccount(newCard);
         mainWindow.updateCardViewer();
         mainWindow.updateCardList();
+    }
+
+    // EFFECTS: if user has changed the text in the title field then change title of given card
+    private void updateCardTitle(AccountCard newCard) {
+        if (!card.getTitle().equals(titleField.getText())) {
+            newCard.setNewTitle(titleField.getText(), card.getTitle());
+        } else {
+            newCard.setTitle(titleField.getText());
+        }
+    }
+
+    // EFFECTS: if user has changed the text in the login field then change login of given card
+    private void updateCardLogin(AccountCard newCard) {
+        if (!card.getLogin().equals(loginField.getText())) {
+            newCard.setNewLogin(loginField.getText());
+        } else {
+            newCard.setLogin(loginField.getText());
+        }
+    }
+
+    // EFFECTS: if user has changed the text in the password field then change password of given card
+    private void updateCardPassword(AccountCard newCard) {
+        if (!card.getPassword().equals(String.valueOf(passwordField.getPassword()))) {
+            newCard.setNewPassword(String.valueOf(passwordField.getPassword()));
+        } else {
+            newCard.setPassword(String.valueOf(passwordField.getPassword()));
+        }
+    }
+
+    // EFFECTS: if user has changed the text in the email field then change email of given card
+    private void updateCardEmail(AccountCard newCard) {
+        if (!card.getEmail().equals(emailField.getText())) {
+            newCard.setNewEmail(emailField.getText());
+        } else {
+            newCard.setEmail(emailField.getText());
+        }
+    }
+
+    // EFFECTS: if user has changed the text in the url field then change url of given card
+    private void updateCardUrl(AccountCard newCard) {
+        if (!card.getUrl().equals(urlField.getText())) {
+            newCard.setNewUrl(urlField.getText());
+        } else {
+            newCard.setUrl(urlField.getText());
+        }
     }
 
     /**

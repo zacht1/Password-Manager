@@ -1,6 +1,8 @@
 package ui.windows;
 
 import model.AccountCard;
+import model.logging.EventLog;
+import model.logging.Event;
 import ui.PasswordManagerApp;
 import ui.windows.panels.CardListPanel;
 import ui.windows.panels.CardViewPanel;
@@ -220,6 +222,8 @@ public class MainWindow extends JFrame implements ActionListener {
             @Override
             public void windowClosing(WindowEvent e) {
                 passwordManagerApp.save();
+                printLog();
+                EventLog.getInstance().clear();
                 System.exit(0);
             }
 
@@ -260,7 +264,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
     // EFFECTS: deletes the current selected card
     public void deleteCard() {
-        passwordManagerApp.getPasswordManager().deleteSpecificCard(selectedAccount.getTitle());
+        passwordManagerApp.getPasswordManager().deleteCard(selectedAccount);
         accounts = passwordManagerApp.getPasswordManager().getAccounts();
 
         if (accounts.size() <= 0) {
@@ -275,6 +279,14 @@ public class MainWindow extends JFrame implements ActionListener {
             updateCardViewer();
         }
         updateCardList();
+    }
+
+    // MODIFIES:
+    // EFFECTS:
+    private void printLog() {
+        for (Event next : EventLog.getInstance()) {
+            System.out.println(next.toString() + "\n");
+        }
     }
 
     //getters & setters

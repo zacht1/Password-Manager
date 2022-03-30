@@ -35,4 +35,3 @@ masterPassword managers work, and how they protect users' passwords.
 ### Sources & Acknowledgments
 - Logo images from https://www.canva.com/
 - Icons from https://jetbrains.design/intellij/resources/icons_list/
-- Java Swing look and feel & Java Swing SVG icon from https://www.formdev.com/flatlaf/

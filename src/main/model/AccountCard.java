@@ -1,5 +1,7 @@
 package model;
 
+import model.logging.Event;
+import model.logging.EventLog;
 import org.json.JSONObject;
 import persistence.JsonFormat;
 
@@ -89,6 +91,34 @@ public class AccountCard implements JsonFormat {
         jsonObject.put("url", url);
 
         return jsonObject;
+    }
+
+    public void setNewTitle(String title, String oldTitle) {
+        this.title = title;
+        EventLog.getInstance().logEvent(new model.logging.Event(oldTitle + " card title changed"));
+    }
+
+    public void setNewLogin(String login) {
+        this.login = login;
+        EventLog.getInstance().logEvent(new model.logging.Event(this.getTitle() + " card login changed"));
+    }
+
+    public void setNewPassword(String password) {
+        this.password = password;
+        EventLog.getInstance().logEvent(new model.logging.Event(this.getTitle()
+                + " card password changed"));
+    }
+
+    public void setNewEmail(String email) {
+        this.email = email;
+        EventLog.getInstance().logEvent(new model.logging.Event(this.getTitle()
+                + " card email changed"));
+    }
+
+    public void setNewUrl(String url) {
+        this.url = url;
+        EventLog.getInstance().logEvent(new Event(this.getTitle()
+                + " card website URL changed"));
     }
 
     // getters & setters

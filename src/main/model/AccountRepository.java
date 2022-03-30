@@ -1,5 +1,7 @@
 package model;
 
+import model.logging.Event;
+import model.logging.EventLog;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.JsonFormat;
@@ -38,6 +40,11 @@ public class AccountRepository implements JsonFormat {
         accounts.add(card);
     }
 
+    public void addNewCard(AccountCard card) {
+        accounts.add(card);
+        EventLog.getInstance().logEvent(new Event(card.getTitle() + " card added to the account card repository"));
+    }
+
     // EFFECTS: returns a list of all the account card titles
     public List<String> getAccountTitles() {
         return accounts.stream().map(AccountCard::getTitle).collect(Collectors.toList());
@@ -54,6 +61,26 @@ public class AccountRepository implements JsonFormat {
         if (accountTitles.contains(title)) {
             int index = accountTitles.indexOf(title);
             accounts.remove(index);
+            EventLog.getInstance().logEvent(new Event(title + " card deleted from the account card repository"));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean deleteCard(AccountCard card) {
+        if (accounts.contains(card)) {
+            accounts.remove(card);
+            EventLog.getInstance().logEvent(new Event(card.getTitle() + " card deleted from the account repository"));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean deleteCardWithoutLogging(AccountCard card) {
+        if (accounts.contains(card)) {
+            accounts.remove(card);
             return true;
         } else {
             return false;
