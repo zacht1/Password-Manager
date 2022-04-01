@@ -5,6 +5,7 @@ import model.AccountRepository;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,9 +48,9 @@ public class JsonReaderTest extends JsonTest{
             accounts.setMasterPassword(jsonReader.readMasterPassword());
             assertEquals("1234abcd", accounts.getMasterPassword());
             assertEquals(2, accounts.numAccounts());
-            checkCard("Google", null, "12345abcd", null, null,
+            checkUndatedCard("Google", null, "12345abcd", null, null,
                     accounts.getAccounts().get(0));
-            checkCard("Amazon", "Johnd", null, "josn_d334@gmail.com", null,
+            checkUndatedCard("Amazon", "Johnd", null, "josn_d334@gmail.com", null,
                     accounts.getAccounts().get(1));
         } catch (IOException e) {
             fail("Could not read from file");
@@ -66,9 +67,9 @@ public class JsonReaderTest extends JsonTest{
             accounts.setMasterPassword(jsonReader.readMasterPassword());
             assertEquals("1234abcd", accounts.getMasterPassword());
             assertEquals(2, accounts.numAccounts());
-            checkCard("Google", "Guest", "password", "guest@gmail.com", "google.com",
+            checkUndatedCard("Google", "Guest", "password", "guest@gmail.com", "google.com",
                     accounts.getAccounts().get(0));
-            checkCard("Amazon", "John123", "12345", "john_doe@gmail.com", "amazon.com",
+            checkUndatedCard("Amazon", "John123", "12345", "john_doe@gmail.com", "amazon.com",
                     accounts.getAccounts().get(1));
         } catch (IOException e) {
             fail("Could not read from file");

@@ -13,11 +13,6 @@ This project is of interest to me, because I currently do use a masterPassword m
 they securely store my passwords.  I am hoping this project will give me an opportunity to learn more about how 
 masterPassword managers work, and how they protect users' passwords.
 
-
-### Features I am Hoping to Implement
-- Password duplicate detection
-- Weak masterPassword detection
-
 ## Phase 1 User Stories
 - As a user, I want to be able to add an account card to my masterPassword manager 
 - As a user, I want to be able to add any account information to an account card 
@@ -33,6 +28,8 @@ masterPassword managers work, and how they protect users' passwords.
 - As a user, I want my masterPassword manager to automatically save to file when I close the application
 
 ## Phase 4: Task 2
+Example of logs:
+
 Wed Mar 30 15:15:11 PDT 2022\
 Amazon card added to the account card repository
 
@@ -51,18 +48,22 @@ Facebook card added to the account card repository
 Wed Mar 30 15:16:09 PDT 2022\
 Google card deleted from the account repository
 
-Wed Mar 30 15:16:19 PDT 2022\
-Netflix card login changed
+## Phase 4: Task 3
+Given more time to work on this project I would improve the design of my code in the following ways:
 
-Wed Mar 30 15:16:19 PDT 2022\
-Netflix card password changed
+- In the UML class diagram we see that MainWindow has an association with AccountCard and CardViewPanel, 
+and CardView panel has an association with AccountCard.  In order to improve these relationships by lowering coupling
+I would have MainWindow have an association with CardViewPanel and then have only CardViewPanel have an association with 
+AccountCard
 
-Wed Mar 30 15:16:25 PDT 2022\
-Facebook card login changed
+- There are many places in my code where I would remove duplication given more time. For example I would have all 
+DialogBox classes extend a common parent class in order to remove much of the duplication within the five classes.
 
-Wed Mar 30 15:16:31 PDT 2022\
-AirCanada Aeroplan card website URL changed
-
+- In my design we can notice that there are relationships that employ a subject-observer relationship, where the observer
+needs to be updated every time the subject is modified. In my design the subject would be MainWindow and the observers 
+would be CardListPanel, CardViewPanel, passwordManagerApp, AccountCard, and AccountRepository. I would implement the
+Observer Pattern so that everytime a card was added, deleted, or edited in the MainWindow the CardListPanel, CardViewPanel, 
+passwordManagerApp, AccountCard, and AccountRepository would be notified/updated.
 
 
 ### Sources & Acknowledgments

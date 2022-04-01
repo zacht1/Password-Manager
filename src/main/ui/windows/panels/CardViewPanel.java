@@ -10,23 +10,23 @@ import java.awt.event.ActionListener;
 
 // represents the panel which shows the selected card and its fields
 public class CardViewPanel extends JPanel implements ActionListener {
-    private final AccountCard card;
+    private AccountCard card;
 
-    private final JPanel titlePanel;
-    private final JPanel bottomPanel;
-    private final JPanel rightPanel;
-    private final JPanel leftPanel;
-    private final JPanel centrePanel;
-    private final JPanel loginPanel;
-    private final JPanel passwordPanel;
-    private final JPanel emailPanel;
-    private final JPanel urlPanel;
+    private JPanel titlePanel;
+    private JPanel bottomPanel;
+    private JPanel rightPanel;
+    private JPanel leftPanel;
+    private JPanel centrePanel;
+    private JPanel loginPanel;
+    private JPanel passwordPanel;
+    private JPanel emailPanel;
+    private JPanel urlPanel;
 
-    private final JLabel title;
-    private final JLabel login;
-    private final JLabel password;
-    private final JLabel email;
-    private final JLabel url;
+    private JLabel title;
+    private JLabel login;
+    private JLabel password;
+    private JLabel email;
+    private JLabel url;
 
     private JToggleButton button;
 
@@ -51,6 +51,10 @@ public class CardViewPanel extends JPanel implements ActionListener {
         this.url = new JLabel(card.getUrl());
 
         runCardViewPanel();
+    }
+
+    public CardViewPanel() {
+        this.setVisible(true);
     }
 
     // EFFECTS: creates new panel with all necessary attributes and components

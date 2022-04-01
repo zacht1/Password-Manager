@@ -1,5 +1,6 @@
 {"accounts": [
     {
+        "date": "Thu Mar 31 01:34:08 PDT 2022",
         "password": "1qaz2wsx",
         "title": "Netflix",
         "login": "Guest123",
@@ -7,6 +8,7 @@
         "url": "netflix.com"
     },
     {
+        "date": "Thu Mar 31 01:34:08 PDT 2022",
         "password": "password",
         "title": "UBC Student Services Center",
         "login": "cwlName",

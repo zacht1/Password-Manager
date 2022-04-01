@@ -1,7 +1,6 @@
 package persistence;
 
 import model.AccountRepository;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,6 +10,7 @@ import java.io.PrintWriter;
 // Credit: This class is based on the code from the JsonWriter class in JsonSerializationDemo
 public class JsonWriter {
     private static final int INDENT = 4;
+
     PrintWriter writerAccounts;
     PrintWriter writerPassword;
     String destinationFileAccounts;

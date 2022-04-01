@@ -3,14 +3,17 @@ package ui.windows;
 import ui.PasswordManagerApp;
 import ui.windows.popups.OverwriteAccountDialogBox;
 import ui.windows.popups.WrongPasswordDialogBox;
-import ui.windows.tools.PasswordPrompt;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.*;
 
 // represents the login window of the application
-public class LoginWindow extends JFrame implements ActionListener, KeyListener {
+public class LoginWindow extends JFrame implements ActionListener, KeyListener, FocusListener, DocumentListener {
     private static final String LOGO_FILE = "images/blue_logo.png";
 
     private final PasswordManagerApp passwordManagerApp;
@@ -21,6 +24,9 @@ public class LoginWindow extends JFrame implements ActionListener, KeyListener {
     private final ImageIcon icon;
     private final JCheckBox checkBox;
     private final String masterPassword;
+
+    private JLabel passwordPrompt;
+    private Document doc;
 
 
     // EFFECTS: creates the login window
@@ -49,12 +55,40 @@ public class LoginWindow extends JFrame implements ActionListener, KeyListener {
     // MODIFIES: passwordField
     // EFFECTS: sets up all necessary attributes of passwordField
     private void setupPasswordField() {
-        new PasswordPrompt("Enter your password", passwordField);
-        passwordField.setBounds(107, 205, 210, 28);
+        addPasswordPrompt();
         passwordField.setFont(new Font("Dialog", Font.BOLD, 14));
+        passwordField.setBounds(107, 205, 210, 28);
         passwordField.setToolTipText("Enter master password");
         passwordField.addKeyListener(this);
         passwordField.addActionListener(this);
+    }
+
+    // MODIFIES: passwordPrompt, doc
+    // EFFECTS: setup passwordPrompt and all necessary attributes
+    // credit: reformatted code from here:
+    // http://tips4java.wordpress.com/2009/11/29/text-prompt - Rob Camick
+    private void addPasswordPrompt() {
+        passwordPrompt = new JLabel("Enter your password");
+        doc = passwordField.getDocument();
+
+        passwordPrompt.setFont(new Font("Courier New", Font.PLAIN, 12));
+        passwordPrompt.setForeground(new Color(100, 105, 121));
+        passwordPrompt.setBorder(new EmptyBorder(new Insets(5,3,5,9)));
+        passwordPrompt.setHorizontalAlignment(SwingConstants.LEFT);
+
+        passwordField.addFocusListener(this);
+        doc.addDocumentListener(this);
+
+        passwordField.setLayout(new BorderLayout());
+        passwordField.add(passwordPrompt);
+
+        showPrompt();
+    }
+
+    // MODIFIES: passwordPrompt
+    // EFFECTS: check to see if there is text in the passwordField, if there is remove passwordPrompt
+    private void showPrompt() {
+        passwordPrompt.setVisible(doc.getLength() <= 0);
     }
 
     // MODIFIES: passwordField
@@ -98,7 +132,7 @@ public class LoginWindow extends JFrame implements ActionListener, KeyListener {
     // MODIFIES: checkBox
     // EFFECTS: sets up all necessary attributes of the show password check-box
     private void setupCheckBox() {
-        checkBox.setBounds(103,240,130,15);
+        checkBox.setBounds(103,233,130,16);
         checkBox.setText("Show password");
         checkBox.setFocusable(false);
         checkBox.addActionListener(this);
@@ -181,6 +215,31 @@ public class LoginWindow extends JFrame implements ActionListener, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+        // not used
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        showPrompt();
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        showPrompt();
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        showPrompt();
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        showPrompt();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
         // not used
     }
 }

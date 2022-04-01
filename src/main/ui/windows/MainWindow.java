@@ -21,7 +21,7 @@ import java.util.List;
 // represents the main window of myPasswordManager app
 public class MainWindow extends JFrame implements ActionListener {
     private CardListPanel cardListPanel;
-    private JPanel cardViewPanel;
+    private CardViewPanel cardViewPanel;
     private JToolBar toolBar;
 
     private final PasswordManagerApp passwordManagerApp;
@@ -38,9 +38,10 @@ public class MainWindow extends JFrame implements ActionListener {
     private JButton lockButton;
     private JButton generatorButton;
     private JButton sortButton;
-    private JButton pinButton;
     private JButton settingsButton;
     private JButton saveButton;
+
+    private int sortButtonTimesPushed;
 
     // MODIFIES: this
     // EFFECTS: creates a main window with given accounts, given app,
@@ -50,6 +51,7 @@ public class MainWindow extends JFrame implements ActionListener {
         this.passwordManagerApp = passwordManagerApp;
         this.creatorWindowOpen = false;
         this.editorWindowOpen = false;
+        this.sortButtonTimesPushed = 0;
 
         if (accounts.size() <= 0) {
             selectedAccount = null;
@@ -169,16 +171,6 @@ public class MainWindow extends JFrame implements ActionListener {
         sortButton.addActionListener(this);
     }
 
-    // MODIFIES: pinButton
-    // EFFECTS: instantiates pinButton and sets up all necessary attributes
-    private void setupPinButton() {
-        pinButton = new JButton();
-        pinButton.setIcon(new ImageIcon("./images/icons/pin.png"));
-        pinButton.setBorderPainted(false);
-        pinButton.setToolTipText("Pin card");
-        pinButton.addActionListener(this);
-    }
-
     // MODIFIES: saveButton
     // EFFECTS: instantiates saveButton and sets up all necessary attributes
     private void setupSaveButton() {
@@ -196,7 +188,7 @@ public class MainWindow extends JFrame implements ActionListener {
         if (accounts.size() > 0) {
             cardViewPanel = new CardViewPanel(selectedAccount);
         } else {
-            cardViewPanel = new JPanel();
+            cardViewPanel = new CardViewPanel();
         }
     }
 
@@ -253,13 +245,13 @@ public class MainWindow extends JFrame implements ActionListener {
     // EFFECTS: opens AccountCreatorWindow, in order to add a new card
     private void addCard() {
         creatorWindowOpen = true;
-        new CardCreatorWindow(passwordManagerApp, this);
+        new CardCreatorWindow(this);
     }
 
     // EFFECTS: opens AccountEditorWindow, in order to edit current selected card
     private void editCard() {
         editorWindowOpen = true;
-        new CardEditorWindow(passwordManagerApp, selectedAccount, this);
+        new CardEditorWindow(this);
     }
 
     // EFFECTS: deletes the current selected card
@@ -270,7 +262,7 @@ public class MainWindow extends JFrame implements ActionListener {
         if (accounts.size() <= 0) {
             selectedAccount = null;
             this.remove(cardViewPanel);
-            cardViewPanel = new JPanel();
+            cardViewPanel = new CardViewPanel();
             this.add(cardViewPanel);
             this.repaint();
             this.setVisible(true);
@@ -281,12 +273,28 @@ public class MainWindow extends JFrame implements ActionListener {
         updateCardList();
     }
 
-    // MODIFIES:
-    // EFFECTS:
+    // EFFECTS: prints the all logs to the screen
     private void printLog() {
         for (Event next : EventLog.getInstance()) {
             System.out.println(next.toString() + "\n");
         }
+    }
+
+    // MODIFIES: cardListPanel
+    // EFFECTS: changes the way the list of account card buttons are sorted in the CardListPanel
+    private void changeListSort() {
+        if (sortButtonTimesPushed % 2 == 1) {
+            cardListPanel.setAccounts(cardListPanel.sortAlphabetically(passwordManagerApp.getPasswordManager()
+                    .getAccounts()));
+        } else {
+            cardListPanel.setAccounts(cardListPanel.sortRecent(passwordManagerApp.getPasswordManager()
+                    .getAccounts()));
+        }
+        cardListPanel.getCardList().removeAll();
+        cardListPanel.addCards();
+        cardListPanel.revalidate();
+        cardListPanel.repaint();
+        sortButtonTimesPushed++;
     }
 
     //getters & setters
@@ -304,6 +312,14 @@ public class MainWindow extends JFrame implements ActionListener {
 
     public void setSelectedAccount(AccountCard account) {
         this.selectedAccount = account;
+    }
+
+    public PasswordManagerApp getPasswordManagerApp() {
+        return passwordManagerApp;
+    }
+
+    public AccountCard getSelectedAccount() {
+        return selectedAccount;
     }
 
     /**
@@ -330,6 +346,9 @@ public class MainWindow extends JFrame implements ActionListener {
         if (saveButton.equals(e.getSource())) {
             passwordManagerApp.save();
             new SuccessfulSaveDialogBox(this);
+        }
+        if (sortButton.equals(e.getSource())) {
+            changeListSort();
         }
     }
 }

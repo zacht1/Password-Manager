@@ -2,15 +2,19 @@ package ui.windows;
 
 import ui.PasswordManagerApp;
 import ui.windows.popups.PasswordMatchDialogBox;
-import ui.windows.tools.PasswordPrompt;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 
 // represents the creation window for a new MyPasswordManager account
-public class AccountCreatorWindow extends JFrame implements ActionListener, KeyListener {
+public class AccountCreatorWindow extends JFrame implements ActionListener, KeyListener,
+        FocusListener, DocumentListener {
     private static final String LOGO_FILE = "images/blue_logo_small.png";
 
     private final PasswordManagerApp passwordManagerApp;
@@ -23,6 +27,10 @@ public class AccountCreatorWindow extends JFrame implements ActionListener, KeyL
     private JLabel iconLabel;
     private ImageIcon icon;
     private JCheckBox checkBox;
+    private JLabel passwordPrompt1;
+    private JLabel passwordPrompt2;
+    private Document doc1;
+    private Document doc2;
 
 
     // EFFECTS: creates the login window
@@ -54,19 +62,62 @@ public class AccountCreatorWindow extends JFrame implements ActionListener, KeyL
     // MODIFIES: passwordField1
     // EFFECTS: sets up all necessary attributes of passwordField1
     private void setupPasswordFields() {
-        new PasswordPrompt("Enter password", passwordField1);
         passwordField1.setBounds(125, 172, 250, 28);
         passwordField1.setFont(new Font("Dialog", Font.BOLD, 14));
         passwordField1.setToolTipText("Enter master password");
         passwordField1.addKeyListener(this);
         passwordField1.addActionListener(this);
 
-        new PasswordPrompt("Confirm password", passwordField2);
         passwordField2.setBounds(125, 205, 250, 28);
         passwordField2.setFont(new Font("Dialog", Font.BOLD, 14));
         passwordField2.setToolTipText("Enter master password");
         passwordField2.addKeyListener(this);
         passwordField2.addActionListener(this);
+
+        addPasswordPrompts();
+    }
+
+    // MODIFIES: passwordPrompt1, passwordPrompt2, doc1, doc2
+    // EFFECTS: setup passwordPrompts and all necessary attributes
+    // credit: reformatted code from here:
+    // http://tips4java.wordpress.com/2009/11/29/text-prompt - Rob Camick
+    private void addPasswordPrompts() {
+        passwordPrompt1 = new JLabel("Enter password");
+        passwordPrompt2 = new JLabel("Confirm password");
+
+        doc1 = passwordField1.getDocument();
+        doc2 = passwordField2.getDocument();
+
+        passwordPrompt1.setFont(new Font("Courier New", Font.PLAIN, 12));
+        passwordPrompt1.setForeground(new Color(100, 105, 121));
+        passwordPrompt1.setBorder(new EmptyBorder(new Insets(5,3,5,9)));
+        passwordPrompt1.setHorizontalAlignment(SwingConstants.LEFT);
+
+        passwordPrompt2.setFont(new Font("Courier New", Font.PLAIN, 12));
+        passwordPrompt2.setForeground(new Color(100, 105, 121));
+        passwordPrompt2.setBorder(new EmptyBorder(new Insets(5,3,5,9)));
+        passwordPrompt2.setHorizontalAlignment(SwingConstants.LEFT);
+
+        passwordField1.addFocusListener(this);
+        passwordField2.addFocusListener(this);
+        doc1.addDocumentListener(this);
+        doc2.addDocumentListener(this);
+
+        passwordField1.setLayout(new BorderLayout());
+        passwordField1.add(passwordPrompt1);
+
+        passwordField2.setLayout(new BorderLayout());
+        passwordField2.add(passwordPrompt2);
+
+        showPrompt();
+    }
+
+    // MODIFIES: passwordPrompt
+    // EFFECTS: check to see if there is text in the passwordField, if there is remove passwordPrompt
+    private void showPrompt() {
+        passwordPrompt1.setVisible(doc1.getLength() <= 0);
+
+        passwordPrompt2.setVisible(doc2.getLength() <= 0);
     }
 
     // MODIFIES: passwordField1
@@ -118,7 +169,7 @@ public class AccountCreatorWindow extends JFrame implements ActionListener, KeyL
     // MODIFIES: checkBox
     // EFFECTS: sets up all necessary attributes of the show password check-box
     private void setupCheckBox() {
-        checkBox.setBounds(125,152,130,15);
+        checkBox.setBounds(125,156,130,16);
         checkBox.setText("Show password");
         checkBox.setFocusable(false);
         checkBox.addActionListener(this);
@@ -193,6 +244,31 @@ public class AccountCreatorWindow extends JFrame implements ActionListener, KeyL
 
     @Override
     public void keyReleased(KeyEvent e) {
+        // not used
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        showPrompt();
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        showPrompt();
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        showPrompt();
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        showPrompt();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
         // not used
     }
 }

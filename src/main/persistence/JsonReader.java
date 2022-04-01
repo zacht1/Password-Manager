@@ -14,8 +14,8 @@ import java.util.stream.Stream;
 // represents a reader, which reads AccountRepository from sourceAccounts file
 // Credit: This class is based on the code from the JsonReader class in JsonSerializationDemo
 public class JsonReader {
-    private String sourceAccounts;
-    private String sourcePassword;
+    private final String sourceAccounts;
+    private final String sourcePassword;
 
     // EFFECTS: constructs a reader to read from the sourceAccounts file
     public JsonReader(String sourceAccounts, String sourcePassword) {
@@ -31,10 +31,16 @@ public class JsonReader {
         return parseAccountRepository(jsonObject);
     }
 
+    // EFFECTS: reads AccountRepository master password from file and returns it,
+    //          throws IOException if cannot read from sourcesPassword file
     public String readMasterPassword() throws IOException {
         String data = readString(sourcePassword);
         JSONObject jsonObject = new JSONObject(data);
-        return jsonObject.getString("masterPassword");
+        if (jsonObject.has("masterPassword")) {
+            return jsonObject.getString("masterPassword");
+        } else {
+            return null;
+        }
     }
 
     // EFFECTS: reads the sourceAccounts file as a string a returns it, throws IOException if
@@ -76,12 +82,14 @@ public class JsonReader {
         String password = readPassword(jsonObject);
         String email = readEmail(jsonObject);
         String url = readUrl(jsonObject);
+        String date = readDate(jsonObject);
 
         AccountCard accountCard = new AccountCard(title);
         accountCard.setLogin(login);
         accountCard.setPassword(password);
         accountCard.setEmail(email);
         accountCard.setUrl(url);
+        accountCard.setDate(date);
 
         accounts.addCard(accountCard);
     }
@@ -122,6 +130,15 @@ public class JsonReader {
     public String readUrl(JSONObject jsonObject) {
         if (jsonObject.has("url")) {
             return jsonObject.getString("url");
+        } else {
+            return null;
+        }
+    }
+
+    // EFFECTS: if key: "url" exists, returns the string under the key: "url", otherwise returns null
+    public String readDate(JSONObject jsonObject) {
+        if (jsonObject.has("date")) {
+            return jsonObject.getString("date");
         } else {
             return null;
         }

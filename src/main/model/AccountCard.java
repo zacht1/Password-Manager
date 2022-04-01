@@ -8,7 +8,10 @@ import persistence.JsonFormat;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -19,6 +22,7 @@ public class AccountCard implements JsonFormat {
     private String password;
     private String email;
     private String url;
+    private Date date;
 
     // REQUIRES: title has a non-zero length
     // EFFECTS: constructs a new account card with the given title and null for the rest of the fields
@@ -28,6 +32,7 @@ public class AccountCard implements JsonFormat {
         password = null;
         email = null;
         url = null;
+        date = new Date();
     }
 
     // EFFECTS: if AccountCard has a password, it is copied to the clipboard and returns true, otherwise returns false
@@ -57,7 +62,7 @@ public class AccountCard implements JsonFormat {
     // MODIFIES: this
     // EFFECTS: sets password to a random password from a combination of letters, numbers and symbols and returns
     //          that password
-    // note: this is not a great password generator, planning to improve as project progresses
+    // note: this is not a great password generator, needs improvement
     // credit: reformatted some code from here:
     // https://stackoverflow.com/questions/2626835/is-there-functionality-to-generate-a-random-character-in-java
     public String generatePassword(int length) {
@@ -89,36 +94,9 @@ public class AccountCard implements JsonFormat {
         jsonObject.put("password", password);
         jsonObject.put("email", email);
         jsonObject.put("url", url);
+        jsonObject.put("date", date);
 
         return jsonObject;
-    }
-
-    public void setNewTitle(String title, String oldTitle) {
-        this.title = title;
-        EventLog.getInstance().logEvent(new model.logging.Event(oldTitle + " card title changed"));
-    }
-
-    public void setNewLogin(String login) {
-        this.login = login;
-        EventLog.getInstance().logEvent(new model.logging.Event(this.getTitle() + " card login changed"));
-    }
-
-    public void setNewPassword(String password) {
-        this.password = password;
-        EventLog.getInstance().logEvent(new model.logging.Event(this.getTitle()
-                + " card password changed"));
-    }
-
-    public void setNewEmail(String email) {
-        this.email = email;
-        EventLog.getInstance().logEvent(new model.logging.Event(this.getTitle()
-                + " card email changed"));
-    }
-
-    public void setNewUrl(String url) {
-        this.url = url;
-        EventLog.getInstance().logEvent(new Event(this.getTitle()
-                + " card website URL changed"));
     }
 
     // getters & setters
@@ -160,5 +138,19 @@ public class AccountCard implements JsonFormat {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        if (!(date == null)) {
+            try {
+                this.date = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(date);
+            } catch (ParseException e) {
+                System.out.println("Unparseable date");
+            }
+        }
     }
 }

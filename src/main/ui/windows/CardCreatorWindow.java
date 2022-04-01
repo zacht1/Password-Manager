@@ -1,7 +1,6 @@
 package ui.windows;
 
 import model.AccountCard;
-import ui.PasswordManagerApp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,13 +25,10 @@ public class CardCreatorWindow extends JFrame implements ActionListener {
     private JTextField urlField;
     private JButton saveButton;
 
-    private AccountCard card;
-    private final PasswordManagerApp passwordManagerApp;
     private final MainWindow mainWindow;
 
     // EFFECTS: creates the account card editor window
-    public CardCreatorWindow(PasswordManagerApp passwordManagerApp, MainWindow mainWindow) {
-        this.passwordManagerApp = passwordManagerApp;
+    public CardCreatorWindow(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
         runWindow();
     }
@@ -203,12 +199,12 @@ public class CardCreatorWindow extends JFrame implements ActionListener {
     // MODIFIES: card, mainWindow, passwordManagerApp
     // EFFECTS: adds the new card being created to the mainWindow and passwordManagerApp
     private void saveCard() {
-        card = new AccountCard(titleField.getText());
+        AccountCard card = new AccountCard(titleField.getText());
         card.setLogin(loginField.getText());
         card.setPassword(String.valueOf(passwordField.getPassword()));
         card.setEmail(emailField.getText());
         card.setUrl(urlField.getText());
-        passwordManagerApp.getPasswordManager().addNewCard(card);
+        mainWindow.getPasswordManagerApp().getPasswordManager().addNewCard(card);
         mainWindow.getCardListPanel().addCard(card);
     }
 

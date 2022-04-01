@@ -88,7 +88,8 @@ public class PasswordManagerApp {
         mainWindow = new MainWindow(passwordManager.getAccounts(), this);
     }
 
-    // sets up a new MyPasswordManager account
+    // MODIFIES: passwordManager, mainWindow
+    // EFFECTS: sets up a new MyPasswordManager account
     public void setupNewAccount(String password) {
         passwordManager = new AccountRepository(password);
         mainWindow = new MainWindow(passwordManager.getAccounts(), this);

@@ -1,7 +1,6 @@
 package ui.windows;
 
 import model.AccountCard;
-import ui.PasswordManagerApp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,15 +28,11 @@ public class CardEditorWindow extends JFrame implements ActionListener {
     private JTextField urlField;
     private JButton saveButton;
 
-    private final PasswordManagerApp passwordManagerApp;
-    private final AccountCard card;
     private final MainWindow mainWindow;
 
     // EFFECTS: creates the account card editor window with given passwordManagerApp and given AccountCard
-    public CardEditorWindow(PasswordManagerApp passwordManagerApp, AccountCard card, MainWindow mainWindow) {
-        this.passwordManagerApp = passwordManagerApp;
+    public CardEditorWindow(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
-        this.card = card;
         runWindow();
     }
 
@@ -59,7 +54,7 @@ public class CardEditorWindow extends JFrame implements ActionListener {
     // EFFECTS: sets up all necessary attributes of titleField
     private void setupTitleField() {
         titleField = new JTextField();
-        titleField.setText(card.getTitle());
+        titleField.setText(mainWindow.getSelectedAccount().getTitle());
         titleField.setBounds(40,25,420,30);
         titleField.setFont(new Font("Helvetica Neue", Font.BOLD, 15));
     }
@@ -72,7 +67,7 @@ public class CardEditorWindow extends JFrame implements ActionListener {
         loginLabel.setBounds(13, 6, 100, 15);
 
         loginField = new JTextField();
-        loginField.setText(card.getLogin());
+        loginField.setText(mainWindow.getSelectedAccount().getLogin());
         loginField.setBounds(10, 20, 400, 30);
         loginField.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
     }
@@ -86,7 +81,7 @@ public class CardEditorWindow extends JFrame implements ActionListener {
 
         passwordField = new JPasswordField();
         passwordField.setEchoChar('\u0000');
-        passwordField.setText(card.getPassword());
+        passwordField.setText(mainWindow.getSelectedAccount().getPassword());
         passwordField.setBounds(10, 75, 400, 30);
         passwordField.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
     }
@@ -99,7 +94,7 @@ public class CardEditorWindow extends JFrame implements ActionListener {
         emailLabel.setBounds(13, 116, 100, 15);
 
         emailField = new JTextField();
-        emailField.setText(card.getEmail());
+        emailField.setText(mainWindow.getSelectedAccount().getEmail());
         emailField.setBounds(10, 130, 400, 30);
         emailField.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
     }
@@ -112,7 +107,7 @@ public class CardEditorWindow extends JFrame implements ActionListener {
         urlLabel.setBounds(13, 171, 100, 15);
 
         urlField = new JTextField();
-        urlField.setText(card.getUrl());
+        urlField.setText(mainWindow.getSelectedAccount().getUrl());
         urlField.setBounds(10, 185, 400, 30);
         urlField.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
     }
@@ -221,56 +216,37 @@ public class CardEditorWindow extends JFrame implements ActionListener {
         updateCardEmail(newCard);
         updateCardUrl(newCard);
 
-        passwordManagerApp.getPasswordManager().deleteCardWithoutLogging(card);
-        passwordManagerApp.getPasswordManager().addCard(newCard);
+        mainWindow.getPasswordManagerApp().getPasswordManager()
+                .deleteCardWithoutLogging(mainWindow.getSelectedAccount());
+        mainWindow.getPasswordManagerApp().getPasswordManager().addCard(newCard);
         mainWindow.setSelectedAccount(newCard);
         mainWindow.updateCardViewer();
         mainWindow.updateCardList();
     }
 
-    // EFFECTS: if user has changed the text in the title field then change title of given card
+    // EFFECTS: change title of given card to the value of TitleField
     private void updateCardTitle(AccountCard newCard) {
-        if (!card.getTitle().equals(titleField.getText())) {
-            newCard.setNewTitle(titleField.getText(), card.getTitle());
-        } else {
-            newCard.setTitle(titleField.getText());
-        }
+        newCard.setTitle(titleField.getText());
     }
 
-    // EFFECTS: if user has changed the text in the login field then change login of given card
+    // EFFECTS: change login of given card to the value of LoginField
     private void updateCardLogin(AccountCard newCard) {
-        if (!card.getLogin().equals(loginField.getText())) {
-            newCard.setNewLogin(loginField.getText());
-        } else {
-            newCard.setLogin(loginField.getText());
-        }
+        newCard.setLogin(loginField.getText());
     }
 
-    // EFFECTS: if user has changed the text in the password field then change password of given card
+    // EFFECTS: change password of given card to the value of passwordField
     private void updateCardPassword(AccountCard newCard) {
-        if (!card.getPassword().equals(String.valueOf(passwordField.getPassword()))) {
-            newCard.setNewPassword(String.valueOf(passwordField.getPassword()));
-        } else {
-            newCard.setPassword(String.valueOf(passwordField.getPassword()));
-        }
+        newCard.setPassword(String.valueOf(passwordField.getPassword()));
     }
 
-    // EFFECTS: if user has changed the text in the email field then change email of given card
+    // EFFECTS: change email of given card to the value of emailField
     private void updateCardEmail(AccountCard newCard) {
-        if (!card.getEmail().equals(emailField.getText())) {
-            newCard.setNewEmail(emailField.getText());
-        } else {
-            newCard.setEmail(emailField.getText());
-        }
+        newCard.setEmail(emailField.getText());
     }
 
-    // EFFECTS: if user has changed the text in the url field then change url of given card
+    // EFFECTS: change url of given card to the value of urlField
     private void updateCardUrl(AccountCard newCard) {
-        if (!card.getUrl().equals(urlField.getText())) {
-            newCard.setNewUrl(urlField.getText());
-        } else {
-            newCard.setUrl(urlField.getText());
-        }
+        newCard.setUrl(urlField.getText());
     }
 
     /**

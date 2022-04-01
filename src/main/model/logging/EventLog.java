@@ -15,7 +15,7 @@ public class EventLog implements Iterable<Event> {
     private static EventLog theLog;
     private Collection<Event> events;
 	
-	/** 
+	/**
 	 * Prevent external construction.
 	 * (Singleton Design Pattern).
 	 */

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -74,9 +75,9 @@ public class JsonWriterTest extends JsonTest{
             assertEquals("password", accounts.getMasterPassword());
             assertEquals(2, accounts.numAccounts());
             checkCard("Netflix", "Guest123", "1qaz2wsx", "jimbo@gmail.com",
-                    "netflix.com", accounts.getAccounts().get(0));
+                    "netflix.com", new Date(), accounts.getAccounts().get(0));
             checkCard("UBC Student Services Center", "cwlName", "password",
-                    "student@student.ubc.ca", "cas.id.ubc.ca", accounts.getAccounts().get(1));
+                    "student@student.ubc.ca", "cas.id.ubc.ca", new Date(), accounts.getAccounts().get(1));
 
         } catch (FileNotFoundException e) {
             fail("Could not open destination file");
