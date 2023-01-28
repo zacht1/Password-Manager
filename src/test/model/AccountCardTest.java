@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AccountCardTest {
+class vAccountCardTest {
     private AccountCard testCard;
 
     @BeforeEach
